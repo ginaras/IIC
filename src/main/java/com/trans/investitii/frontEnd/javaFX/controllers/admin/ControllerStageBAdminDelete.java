@@ -125,7 +125,6 @@ public class ControllerStageBAdminDelete implements Initializable {
             e.printStackTrace();
         }
         comboBoxFz.setItems( FXCollections.observableArrayList( myListFz ) );
-//        choiceBodxFz.setItems( FXCollections.observableArrayList( myListFz ) );
         comboBoxContr.setItems( FXCollections.observableArrayList(myListContract));
         comboBoxCtInv.setItems( FXCollections.observableArrayList(myListCtInvest));
         comboBoxCtFz.setItems( FXCollections.observableArrayList(myListCtFz));
