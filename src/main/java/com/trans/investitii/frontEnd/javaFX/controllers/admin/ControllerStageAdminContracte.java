@@ -53,6 +53,11 @@ public class ControllerStageAdminContracte implements Initializable {
     @Override
     public void initialize ( java.net.URL location, ResourceBundle resources ) {
         try {
+            sortFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
             Scanner s = new Scanner(new File( pathFileContract )).useDelimiter("\\s+");
             while (s.hasNext()) {
                 if (s.hasNextInt()) { // check if next token is an int
@@ -144,11 +149,13 @@ public class ControllerStageAdminContracte implements Initializable {
     }
 
     public void addNewContract ( ActionEvent event ) throws FileNotFoundException {
-        String fileLine;
-        String addTextFieldString = addContract.getCharacters().toString();
         BufferedReader bReader = new BufferedReader(new FileReader( pathFileContract ));
+        String fileLine;
+        String addString = addContract.getCharacters().toString();
+        String inactiveString = "INACTIV-".concat( addString );
+        String addCtFzString = addContract.getCharacters().toString();
 
-        if (addTextFieldString.isEmpty()) {
+        if (addString.isEmpty()) {
             Alert fail = new Alert( Alert.AlertType.INFORMATION );
             fail.setHeaderText( "Atentie!" );
             fail.setContentText( "Nu poti introduce campuri goale!" );
@@ -157,31 +164,40 @@ public class ControllerStageAdminContracte implements Initializable {
         }
         else {
             try {
-                while((fileLine=bReader.readLine()) != null){
-                    if(fileLine.toLowerCase().equals(addTextFieldString.toLowerCase())) {
+                while ((fileLine = bReader.readLine()) != null) {
+                    if (fileLine.toLowerCase().equals( addString.toLowerCase() )) {
                         Alert fail = new Alert( Alert.AlertType.INFORMATION );
                         fail.setHeaderText( "Atentie!" );
-                        fail.setContentText( "Elementul "+addTextFieldString+" exista in baza de date" );
+                        fail.setContentText( "Elementul " + addContract + " exista in baza de date" );
                         fail.showAndWait();
                         addContract.clear();
                         break;
                     }
-                }
+                        if (fileLine.equalsIgnoreCase( inactiveString )) {
+                            Alert fail2 = new Alert( Alert.AlertType.INFORMATION );
+                            fail2.setHeaderText( "Atentie!" );
+                            fail2.setContentText( "Elementul " + addCtFzString + " este WHILE inactiv in baza de date" );
+                            fail2.showAndWait();
+                            addContract.clear();
+                            break;
+                        }
+                    }
 
-                if(fileLine==null || !fileLine.toLowerCase().equals(addTextFieldString.toLowerCase())){
-                    BufferedWriter writer = new BufferedWriter( new FileWriter( pathFileContract, true ) );
-                    writer.append( addTextFieldString+ "\n" );
-                    writer.close();
-                    ItemList.appendText( addTextFieldString + "\n" ); // ad data in TextArea from text field
-                    addContract.clear();
-                    this.added.setText( "Ati adaugat cu succes" );
-                    sortFile();
+                    if (fileLine == null || (!(fileLine.equalsIgnoreCase( addCtFzString ))
+                            && !(inactiveString.equalsIgnoreCase( fileLine )))) {
+                        BufferedWriter writer = new BufferedWriter( new FileWriter( pathFileContract, true ) );
+                        writer.append( addString + "\n" );
+                        writer.close();
+                        ItemList.appendText( addContract + "\n" ); // ad data in TextArea from text field
+                        addContract.clear();
+                        this.added.setText( "Ati adaugat cu succes" );
+                        sortFile();
+                    }
+            }catch(IOException e){
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
-    }
 
     public void exportContracteAdminList ( ActionEvent event ) throws IOException {
         BufferedWriter bufferedWriter = new BufferedWriter( new FileWriter("C:\\Investitii\\rapoarte\\export.txt") );

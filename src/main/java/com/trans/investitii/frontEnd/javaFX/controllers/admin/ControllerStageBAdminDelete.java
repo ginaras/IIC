@@ -135,13 +135,38 @@ public class ControllerStageBAdminDelete implements Initializable {
 
 }
 
-    public void deactBtn() {
+    public void deactBtnFz() {
                 fzDeleteBut.setDisable( false );
                 fzReActivBut.setDisable( false );
-//                contractDeleteBut.setDisable( false );
-//                contractReActivBut.setDisable( false );
     }
-
+    public void deactBtnContract() {
+                contractDeleteBut.setDisable( false );
+                contractReActivBut.setDisable( false );
+    }
+    public void deactBtnCtInv() {
+        ctInvDeleteBut.setDisable( false );
+        ctInvReActivBut.setDisable( false );
+    }
+    public void deactBtnCtFz() {
+        ctFzDeleteBut.setDisable( false );
+        ctFzReActivBut.setDisable( false );
+    }
+    public void deactBtnNrProj() {
+        nrProjDeleteBut.setDisable( false );
+        nrProjReActivBut.setDisable( false );
+    }
+    public void deactBtnRespProg() {
+        respProjDeleteBut.setDisable( false );
+        respProjReActivBut.setDisable( false );
+    }
+    public void deactBtnDeviz() {
+        devizDeleteBut.setDisable( false );
+        devizReActivBut.setDisable( false );
+    }
+    public void deactBtnOrg() {
+        orgDeleteBut.setDisable( false );
+        orgReActivBut.setDisable( false );
+    }
 
     public void buttonBack ( ActionEvent event ) throws IOException {
         Parent stage1Intro = FXMLLoader.load( getClass().getResource( "/fxml/sample.fxml" ) );

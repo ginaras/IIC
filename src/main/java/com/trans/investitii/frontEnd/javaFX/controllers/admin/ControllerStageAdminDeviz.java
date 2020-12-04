@@ -52,6 +52,11 @@ public class ControllerStageAdminDeviz implements Initializable {
     @Override
     public void initialize ( java.net.URL location, ResourceBundle resources ) {
         try {
+            sortFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
             Scanner s = new Scanner(new File("C:\\Investitii\\resurse\\deviz")).useDelimiter("\\s+");
             while (s.hasNext()) {
                 if (s.hasNextInt()) {
@@ -159,35 +164,45 @@ public class ControllerStageAdminDeviz implements Initializable {
     }
 
     public void addNewDeviz ( ActionEvent event ) throws FileNotFoundException {
-        String fileLine;
-        String addTextFieldString = addDeviz.getCharacters().toString();
         BufferedReader bReader = new BufferedReader(new FileReader( pathFileDeviz ));
+        String fileLine;
+        String addString = addDeviz.getCharacters().toString();
+        String inactiveString = "INACTIV-".concat( addString );
+        String addCtFzString = addDeviz.getCharacters().toString();
 
-        if (addTextFieldString.isEmpty()) {
+        if (addString.isEmpty()) {
             Alert fail = new Alert( Alert.AlertType.INFORMATION );
             fail.setHeaderText( "Atentie!" );
             fail.setContentText( "Nu poti introduce campuri goale!" );
             fail.showAndWait();
-            //  break;
         }
         else {
             try {
                 while((fileLine=bReader.readLine()) != null){
-                    if(fileLine.toLowerCase().equals(addTextFieldString.toLowerCase())) {
+                    if(fileLine.equalsIgnoreCase(addString )) {
                         Alert fail = new Alert( Alert.AlertType.INFORMATION );
                         fail.setHeaderText( "Atentie!" );
-                        fail.setContentText( "Elementul "+addTextFieldString+" exista in baza de date" );
+                        fail.setContentText( "Elementul "+addString+" exista in baza de date" );
+                        fail.showAndWait();
+                        addDeviz.clear();
+                        break;
+                    }
+                    if (fileLine.equalsIgnoreCase( inactiveString )) {
+                        Alert fail = new Alert( Alert.AlertType.INFORMATION );
+                        fail.setHeaderText( "Atentie!" );
+                        fail.setContentText( "Elementul " + addString + " este inactiv in baza de date" );
                         fail.showAndWait();
                         addDeviz.clear();
                         break;
                     }
                 }
 
-                if(fileLine==null || !fileLine.equals(addTextFieldString)){
+                if (fileLine == null || (!(fileLine.equalsIgnoreCase(addCtFzString))
+                        && !(inactiveString.equalsIgnoreCase( fileLine )))) {
                     BufferedWriter writer = new BufferedWriter( new FileWriter( pathFileDeviz, true ) );
-                    writer.append( addTextFieldString+ "\n" );
+                    writer.append( addString+ "\n" );
                     writer.close();
-                    ItemList.appendText( addTextFieldString + "\n" ); // ad data in TextArea from text field
+                    ItemList.appendText( addString + "\n" ); // ad data in TextArea from text field
                     addDeviz.clear();
                     this.added.setText( "Ati adaugat cu succes" );
                     sortFile();

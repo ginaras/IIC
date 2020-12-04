@@ -53,6 +53,11 @@ public class ControllerStageAdminContInv implements Initializable {
     @Override
     public void initialize ( java.net.URL location, ResourceBundle resources ) {
         try {
+            sortFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
             Scanner s = new Scanner( new File( "C:\\Investitii\\resurse\\ctInv" ) ).useDelimiter( "\\s+" );
             while (s.hasNext()) {
                 if (s.hasNextInt()) { // check if next token is an int
@@ -159,35 +164,46 @@ public class ControllerStageAdminContInv implements Initializable {
 
 
     public void addNewCtInv ( ActionEvent event ) throws FileNotFoundException {
-        String fileLine;
-        String addTextFieldSting = addCtInv.getCharacters().toString();
         BufferedReader bReader = new BufferedReader(new FileReader( pathFileCtInv ));
+        String fileLine;
+        String addString = addCtInv.getCharacters().toString();
+        String inactiveString = "INACTIV-".concat( addString );
+        String addCtInvString = addCtInv.getCharacters().toString();
 
-        if (addTextFieldSting.isEmpty()) {
+        if (addCtInvString.isEmpty()) {
             Alert fail = new Alert( Alert.AlertType.INFORMATION );
             fail.setHeaderText( "Atentie!" );
             fail.setContentText( "Nu poti introduce campuri goale!" );
             fail.showAndWait();
-            //  break;
         }
         else {
             try {
                 while((fileLine=bReader.readLine()) != null){
-                    if(fileLine.equals(addTextFieldSting)) {
+                    if(fileLine.equals(addCtInvString)) {
                         Alert fail = new Alert( Alert.AlertType.INFORMATION );
                         fail.setHeaderText( "Atentie!" );
-                        fail.setContentText( "Elementul "+addTextFieldSting+" exista in baza de date" );
+                        fail.setContentText( "Elementul " + addCtInvString + " exista in baza de date" );
                         fail.showAndWait();
                         addCtInv.clear();
                         break;
                     }
-                }
+                        if (fileLine.equalsIgnoreCase( inactiveString )) {
+                            Alert fail2 = new Alert( Alert.AlertType.INFORMATION );
+                            fail2.setHeaderText( "Atentie!" );
+                            fail2.setContentText( "Elementul " + addCtInvString + " este WHILE inactiv in baza de date" );
+                            fail2.showAndWait();
+                            addCtInv.clear();
+                            break;
+                        }
+                    }
 
-                if(fileLine==null || !fileLine.equals(addTextFieldSting)){
+                if (fileLine == null || (!(fileLine.equalsIgnoreCase(addCtInvString))
+                        && !(inactiveString.equalsIgnoreCase( fileLine ))))
+            {
                     BufferedWriter writer = new BufferedWriter( new FileWriter( pathFileCtInv, true ) );
-                    writer.append( addTextFieldSting+ "\n" );
+                    writer.append( addCtInvString+ "\n" );
                     writer.close();
-                    ItemList.appendText( addTextFieldSting + "\n" ); // ad data in TextArea from text field
+                    ItemList.appendText( addCtInvString + "\n" ); // ad data in TextArea from text field
                     addCtInv.clear();
                     this.added.setText( "Ati adaugat cu succes" );
                     sortFile();

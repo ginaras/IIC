@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/final.iml" filepath="$PROJECT_DIR$/final.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iic.final.iml" filepath="$PROJECT_DIR$/iic.final.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springjfx/iic.springjfx.iml" filepath="$PROJECT_DIR$/springjfx/iic.springjfx.iml" />
     </modules>
   </component>
 </project>

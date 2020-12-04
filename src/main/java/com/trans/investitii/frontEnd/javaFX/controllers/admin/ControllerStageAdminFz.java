@@ -144,6 +144,11 @@ public class ControllerStageAdminFz implements Initializable {
     @Override
     public void initialize ( java.net.URL location, ResourceBundle resources ) {
         try {
+            sortFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
             Scanner s = new Scanner(new File(pathAdmFz)).useDelimiter("\\s+");
             while (s.hasNext()) {
                 if (s.hasNextInt()) { // check if next token is an int
@@ -158,8 +163,8 @@ public class ControllerStageAdminFz implements Initializable {
   }
     public void addNewFz ( ActionEvent event ) throws IOException {
         String fileLine;
-        String fileLineInactiv;
         String addFzString = addFz.getCharacters().toString();
+        String inactiveFzString = "INACTIV-".concat( addFzString );
         BufferedReader bReader = new BufferedReader( new FileReader( pathAdmFz ) );
 
         if (addFzString.isEmpty()) {
@@ -171,7 +176,7 @@ public class ControllerStageAdminFz implements Initializable {
         else  {
             try {
                 while((fileLine=bReader.readLine()) != null) {
-                    if (fileLine.toLowerCase().equals( addFzString.toLowerCase() )) {
+                    if (fileLine.equalsIgnoreCase( addFzString )) {
                         Alert fail = new Alert( Alert.AlertType.INFORMATION );
                         fail.setHeaderText( "Atentie!" );
                         fail.setContentText( "Elementul " + addFzString + " exista in baza de date" );
@@ -179,22 +184,20 @@ public class ControllerStageAdminFz implements Initializable {
                         addFz.clear();
                         break;
                     }
-                }
-                while ((fileLineInactiv = bReader.readLine()) !=null){
-                    if (fileLineInactiv.equals( "INACTIV-".concat(addFzString) )){
+
+                    if (fileLine.equalsIgnoreCase( inactiveFzString )){
                         Alert fail = new Alert( Alert.AlertType.INFORMATION );
                         fail.setHeaderText( "Atentie!" );
                         fail.setContentText( "Elementul "+addFzString+" este WHILE inactiv in baza de date" );
                         fail.showAndWait();
                         addFz.clear();
-//                        break;
+                        break;
                     }
+
                 }
 
-//                if (fileLineInactiv ==null || !(fileLineInactiv.equals( "INACTIV-".concat(addFzString) )) ){
-//                if (!(fileLine.toLowerCase().equals(addFzString.toLowerCase())) && !(fileLineInactiv.equals( "INACTIV-".concat(addFzString) )) ){
-                if (fileLine== null || !(fileLine.toLowerCase().equals(addFzString.toLowerCase()))) {
-//
+                if (fileLine == null || (!(fileLine.equalsIgnoreCase(addFzString))
+                        && !(inactiveFzString.equalsIgnoreCase( fileLine )))) {
                     BufferedWriter writer = new BufferedWriter( new FileWriter( pathAdmFz, true ) );
                     writer.append( addFzString+ "\n" );
                     writer.close();

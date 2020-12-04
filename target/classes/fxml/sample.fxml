@@ -30,8 +30,7 @@
                </font>
             </Text>
             <Text layoutX="1069.0" layoutY="748.0" strokeType="OUTSIDE" strokeWidth="0.0" text="bySorinGinara" />
-            <Button fx:id="runHybernate" layoutX="976.0" layoutY="121.0" mnemonicParsing="false" text="Lansare program" />
-            <Button fx:id="goToStage1Intro" layoutX="559.0" layoutY="234.0" mnemonicParsing="false" onAction="#goToStage1Intro" style="-fx-background-color: #0F4CC1;" text="Intrare in program" textFill="#fcfbf5">
+            <Button fx:id="goToStage1Intro" layoutX="834.0" layoutY="234.0" mnemonicParsing="false" onAction="#goToStage1Intro" style="-fx-background-color: #0F4CC1;" text="Intrare in program" textFill="#fcfbf5">
                <effect>
                   <Bloom threshold="0.1">
                      <input>
@@ -228,6 +227,26 @@
                   <Font size="16.0" />
                </font></Button>
             <Button fx:id="goToStageBDelete" layoutX="452.0" layoutY="377.0" mnemonicParsing="false" onAction="#goToStageBDelete" style="-fx-background-color: #0F4CC1;" text="Stergeri Administrative" textFill="#fcfbf5">
+               <effect>
+                  <Bloom threshold="0.1">
+                     <input>
+                        <Blend mode="SRC_ATOP" opacity="0.57">
+                           <topInput>
+                              <Lighting diffuseConstant="0.95" specularConstant="0.0" specularExponent="0.0" surfaceScale="3.33">
+                                 <bumpInput>
+                                    <Shadow blurType="ONE_PASS_BOX" color="#e19f9f" height="102.62" radius="86.38" width="244.9" />
+                                 </bumpInput>
+                              </Lighting>
+                           </topInput>
+                        </Blend>
+                     </input>
+                  </Bloom>
+               </effect>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="goToStage2Rapoarte" layoutX="836.0" layoutY="305.0" mnemonicParsing="false" onAction="#goToStage2Rapoarte" style="-fx-background-color: #0F4CC1;" text="Rapoarte" textFill="#fcfbf5">
                <effect>
                   <Bloom threshold="0.1">
                      <input>

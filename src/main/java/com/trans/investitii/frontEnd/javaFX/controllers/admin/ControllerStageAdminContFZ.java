@@ -47,6 +47,8 @@ public class ControllerStageAdminContFZ implements Initializable {
     public Text added;
 
     public String pathFileCtFz = "C:\\Investitii\\resurse\\ctFz";
+//    public String pathFileCtFz = "/resources/adminZone/ctFz.txt";
+//    public String pathFileCtFz = ("/main/resources/adminZone/ctFz");
 
     public void goToStage1Intro( ActionEvent event ) throws IOException {
         Parent stage1Intro = FXMLLoader.load( getClass().getResource( "/fxml/Stage1Intro.fxml" ) );
@@ -166,10 +168,10 @@ public class ControllerStageAdminContFZ implements Initializable {
     }
 
     public void addNewFz ( ActionEvent event ) throws IOException {
-        //todo de copiat ac but in toate
         BufferedReader bReader = new BufferedReader(new FileReader( pathFileCtFz ));
         String fileLine;
-        String fileLineInactiv=null;//="INACTIV-".concat( bReader.readLine() );
+        String addString = addCtFZ.getCharacters().toString();
+        String inactiveString = "INACTIV-".concat( addString );
         String addCtFzString = addCtFZ.getCharacters().toString();
 
             if (addCtFzString.isEmpty()) {
@@ -177,41 +179,34 @@ public class ControllerStageAdminContFZ implements Initializable {
                 fail.setHeaderText( "Atentie!" );
                 fail.setContentText( "Nu poti introduce campuri goale!" );
                 fail.showAndWait();
-                //  break;
             }
-                if (fileLineInactiv.equals( ("INACTIV-".concat(addCtFzString)).toString() )){
-                    Alert fail2 = new Alert( Alert.AlertType.INFORMATION );
-                    fail2.setHeaderText( "Atentie!" );
-                    fail2.setContentText( "Elementul "+addCtFzString+" este inactiv in baza de date" );
-                    fail2.showAndWait();
-                    addCtFZ.clear();
-                }
 
             else  {
                 try {
                          while((fileLine=bReader.readLine()) != null) {
-                            if (fileLine.equals( addCtFzString )) {
-                                Alert fail = new Alert( Alert.AlertType.INFORMATION );
-                                fail.setHeaderText( "Atentie!" );
-                                fail.setContentText( "Elementul " + addCtFzString + " exista in baza de date" );
-                                fail.showAndWait();
-                                addCtFZ.clear();
-                                break;
-                            }
-                         }
-                        while ((fileLineInactiv = bReader.readLine()) !=null){
-                            if (fileLineInactiv.equals( "INACTIV-".concat(addCtFzString) )){
-                                Alert fail = new Alert( Alert.AlertType.INFORMATION );
-                                fail.setHeaderText( "Atentie!" );
-                                fail.setContentText( "Elementul "+addCtFzString+" este WHILE inactiv in baza de date" );
-                                fail.showAndWait();
-                                addCtFZ.clear();
+                             if (fileLine.equals( addCtFzString )) {
+                                 Alert fail = new Alert( Alert.AlertType.INFORMATION );
+                                 fail.setHeaderText( "Atentie!" );
+                                 fail.setContentText( "Elementul " + addCtFzString + " exista in baza de date" );
+                                 fail.showAndWait();
+                                 addCtFZ.clear();
+                                 break;
+                             }
 
+
+                             if (fileLine.equalsIgnoreCase( inactiveString )) {
+                                 Alert fail = new Alert( Alert.AlertType.INFORMATION );
+                                 fail.setHeaderText( "Atentie!" );
+                                 fail.setContentText( "Elementul " + addCtFzString + " este WHILE inactiv in baza de date" );
+                                 fail.showAndWait();
+                                 addCtFZ.clear();
+                                 break;
                              }
                          }
 
-                        if(fileLine==null || !fileLine.equals(addCtFzString) || !("INACTIV-".concat( addCtFzString)).equals( bReader.readLine() )){
-                            BufferedWriter writer = new BufferedWriter( new FileWriter( pathFileCtFz, true ) );
+                    if (fileLine == null || (!(fileLine.equalsIgnoreCase(addCtFzString))
+                            && !(inactiveString.equalsIgnoreCase( fileLine )))) {
+                        BufferedWriter writer = new BufferedWriter( new FileWriter( pathFileCtFz, true ) );
                             writer.append( addCtFzString+ "\n" );
                             writer.close();
                             ItemList.appendText( addCtFzString + "\n" ); // ad data in TextArea from text field
@@ -238,7 +233,6 @@ public class ControllerStageAdminContFZ implements Initializable {
                  lines.add(line);
               }
                 bufferedReader.close();
-
                 Collections.sort(lines, Collator.getInstance());
 
               FileWriter writer = new FileWriter("C:\\Investitii\\resurse\\ctFz");

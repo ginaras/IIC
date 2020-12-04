@@ -1,3 +1,4 @@
+
 server:
   port: 800
 
@@ -16,3 +17,6 @@ spring:
     database-platform: "org.hibernate.dialect.MySQL5InnoDBDialect"
     hibernate:
       ddl-auto: "update"
+file:
+  read file: "/resources/adminZone/";
+  write file: "/resources/adminZone/";

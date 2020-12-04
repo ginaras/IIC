@@ -114,30 +114,6 @@ public class ControllerStageAdminOrg implements Initializable {
         windowStage1Intro.setScene( tableViewScene );
         windowStage1Intro.show();
     }
-    public void click(){
-        this.adminOrg.setDisable( true );
-    }
-
-    @Override
-    public void initialize ( URL location, ResourceBundle resources ) {
-        try {
-            Scanner s = new Scanner(new File("C:\\Investitii\\resurse\\org")).useDelimiter("\\s+");
-            while (s.hasNext()) {
-                if (s.hasNextInt()) { // check if next token is an int
-                    ItemList.appendText(s.nextInt() + " "+"\n"); // display the found integer
-                } else {
-                    ItemList.appendText(s.next() + " "+"\n"); // else read the next token
-                }
-            }
-        } catch (FileNotFoundException ex) {
-            System.err.println(ex);
-        }
-
-
-    }
-
-
-
     public void buttonBack ( ActionEvent event ) throws IOException {
         Parent stage1Intro = FXMLLoader.load( getClass().getResource( "/fxml/sample.fxml" ) );
         Scene tableViewScene = new Scene( stage1Intro );
@@ -155,15 +131,42 @@ public class ControllerStageAdminOrg implements Initializable {
             desktop.getDesktop().open( new File( "C:\\Investitii\\rapoarte\\export.txt" ) ); ;
         } catch (IOException e) {
             e.printStackTrace();
+        }}
+    public void click(){
+        this.adminOrg.setDisable( true );
+    }
+
+    @Override
+    public void initialize ( URL location, ResourceBundle resources ) {
+        try {
+            sortFile();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        try {
+            Scanner s = new Scanner(new File("C:\\Investitii\\resurse\\org")).useDelimiter("\\s+");
+            while (s.hasNext()) {
+                if (s.hasNextInt()) { // check if next token is an int
+                    ItemList.appendText(s.nextInt() + " "+"\n"); // display the found integer
+                } else {
+                    ItemList.appendText(s.next() + " "+"\n"); // else read the next token
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            System.err.println(ex);
+        }
+
+
     }
 
     public void addNewOrg ( ActionEvent event ) throws FileNotFoundException {
-        String fileLine;
-        String addTextFieldString = addPOrg.getCharacters().toString();
         BufferedReader bReader = new BufferedReader(new FileReader( pathFileOrg ));
+        String fileLine;
+        String addString = addPOrg.getCharacters().toString();
+        String inactiveString = "INACTIV-".concat( addString );
+        String addCtFzString = addPOrg.getCharacters().toString();
 
-        if (addTextFieldString.isEmpty()) {
+        if (addString.isEmpty()) {
             Alert fail = new Alert( Alert.AlertType.INFORMATION );
             fail.setHeaderText( "Atentie!" );
             fail.setContentText( "Nu poti introduce campuri goale!" );
@@ -173,21 +176,30 @@ public class ControllerStageAdminOrg implements Initializable {
         else {
             try {
                 while((fileLine=bReader.readLine()) != null){
-                    if(fileLine.toLowerCase().equals(addTextFieldString.toLowerCase())) {
+                    if(fileLine.equalsIgnoreCase(addString)) {
                         Alert fail = new Alert( Alert.AlertType.INFORMATION );
                         fail.setHeaderText( "Atentie!" );
-                        fail.setContentText( "Elementul "+addTextFieldString+" exista in baza de date" );
+                        fail.setContentText( "Elementul "+addString+" exista in baza de date" );
+                        fail.showAndWait();
+                        addPOrg.clear();
+                        break;
+                    }
+                    if (fileLine.equalsIgnoreCase( inactiveString )) {
+                        Alert fail = new Alert( Alert.AlertType.INFORMATION );
+                        fail.setHeaderText( "Atentie!" );
+                        fail.setContentText( "Elementul " + addString + " este WHILE inactiv in baza de date" );
                         fail.showAndWait();
                         addPOrg.clear();
                         break;
                     }
                 }
 
-                if(fileLine==null || !fileLine.toLowerCase().equals(addTextFieldString.toLowerCase())){
+                if (fileLine == null || (!(fileLine.equalsIgnoreCase(addCtFzString))
+                        && !(inactiveString.equalsIgnoreCase( fileLine )))){
                     BufferedWriter writer = new BufferedWriter( new FileWriter( pathFileOrg, true ) );
-                    writer.append( addTextFieldString+ "\n" );
+                    writer.append( addString.toUpperCase()+ "\n" );
                     writer.close();
-                    ItemList.appendText( addTextFieldString + "\n" ); // ad data in TextArea from text field
+                    ItemList.appendText( addString.toUpperCase() + "\n" ); // ad data in TextArea from text field
                     addPOrg.clear();
                     this.added.setText( "Ati adaugat cu succes" );
                     sortFile();

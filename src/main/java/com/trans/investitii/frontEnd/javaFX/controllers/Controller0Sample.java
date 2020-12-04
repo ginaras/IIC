@@ -1,7 +1,9 @@
 package com.trans.investitii.frontEnd.javaFX.controllers;
 
-import com.trans.investitii.backEnd.dataBase.configuation.HibernateConfiguration;
-import com.trans.investitii.backEnd.services.OrchestratorServices;
+//import com.trans.investitii.backEnd.dataBase.configuation.HibernateConfiguration;
+//import com.trans.investitii.backEnd.services.OrchestratorServices;
+//import com.trans.investitii.backEnd.ServiceIic;
+import com.trans.investitii.backEnd.DBase.Investitii;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,17 +13,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-import org.hibernate.SessionFactory;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.sql.*;
 import java.util.ResourceBundle;
 
-public class Controller0Sample implements Initializable {
+import static com.trans.investitii.backEnd.DBase.Investitii.*;
+
+//@Component
+//@FxmlView ("sample.fxml")
+public class Controller0Sample implements Initializable { //asta este clasa doar pt javaFX
+
 
     @FXML
     public Button goToStage1Intro;
@@ -34,14 +37,50 @@ public class Controller0Sample implements Initializable {
     public Button adminDeviz;
     public Button adminOrg;
     public Button goToStageBDelete;
+    public Button goToStage2Rapoarte;
 
-    public void goToStage1Intro( ActionEvent event ) throws IOException {
+    public void goToStage1Intro( ActionEvent event ) throws IOException, SQLException {
+        getConectionNew();
         Parent stage1Intro = FXMLLoader.load( getClass().getResource( "/fxml/Stage1Intro.fxml" ) );
         Scene tableViewScene = new Scene( stage1Intro );
         Stage windowStage1Intro = (Stage) ((Node) event.getSource()).getScene().getWindow();
         windowStage1Intro.setScene( tableViewScene );
         windowStage1Intro.show();
+    }
+    public void goToStage2Rapoarte ( ActionEvent event ) throws SQLException, IOException {
+        getConectionNew();
+        Parent stage1Intro = FXMLLoader.load( getClass().getResource( "/fxml/Stage2Rapoarte.fxml" ) );
+        Scene tableViewScene = new Scene( stage1Intro );
+        Stage windowStage1Intro = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        windowStage1Intro.setScene( tableViewScene );
+        windowStage1Intro.show();
 
+    }
+    public Connection getConectionNew () throws SQLException {
+        Connection connection =DriverManager.getConnection( Investitii.URL0, Investitii.USER, Investitii.PASSWORD );
+        Statement statement = connection.createStatement();
+        try {
+        statement.executeUpdate( CREATE_DATABASE );
+        statement.executeUpdate( USE_DATABASE );
+        statement.executeUpdate( CREATE_TABLE );
+       // statement.executeUpdate( USE_TABLE );
+            System.out.println("create");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally{
+            try{
+                if(statement!=null)
+                    statement.close();
+            }catch(SQLException se2){
+            }
+            try{
+                if(connection!=null)
+                    connection.close();
+            }catch(SQLException se){
+                se.printStackTrace();
+            }
+        }
+        return null;
     }
 
     public void goOnAdminFz ( ActionEvent event ) throws IOException {
@@ -117,15 +156,6 @@ public class Controller0Sample implements Initializable {
         windowStage1Intro.setScene( tableViewScene );
         windowStage1Intro.show();
     }
-
-//    public void runHybernate ( ActionEvent actionEvent ) {
-//        SessionFactory sessionFactory = HibernateConfiguration.getSessionFactory(); //refactorizare- o deschid pt o refolosi pe prcursul rularii
-//        OrchestratorServices orchestratorServices = new OrchestratorServices( sessionFactory );//refactorizare
-//        orchestratorServices.runApplication();
-//        //sessionFactory.close();
-//
-//
-//    }
 
     @Override
     public void initialize ( java.net.URL location, ResourceBundle resources ) {
@@ -223,3 +253,4 @@ public class Controller0Sample implements Initializable {
         }
     }
 }
+
