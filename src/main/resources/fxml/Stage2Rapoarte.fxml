@@ -117,6 +117,46 @@
             <Font size="16.0" />
          </font>
       </Button>
-      <Text layoutX="1127.0" layoutY="787.0" strokeType="OUTSIDE" strokeWidth="0.0" text="bySorinGinara" />
+      <Text layoutX="1113.0" layoutY="787.0" strokeType="OUTSIDE" strokeWidth="0.0" text="bySorinGinara" />
+      <Button fx:id="ExportButton" layoutX="979.0" layoutY="666.0" mnemonicParsing="false" onAction="#ExportXlsButton" style="-fx-background-color: #0F4CC1;" text="Export baza in excel" textFill="#fcfbf5">
+         <effect>
+            <Bloom threshold="0.1">
+               <input>
+                  <Blend mode="SRC_ATOP" opacity="0.57">
+                     <topInput>
+                        <Lighting diffuseConstant="0.95" specularConstant="0.0" specularExponent="0.0" surfaceScale="3.33">
+                           <bumpInput>
+                              <Shadow blurType="ONE_PASS_BOX" color="#e19f9f" height="102.62" radius="86.38" width="244.9" />
+                           </bumpInput>
+                        </Lighting>
+                     </topInput>
+                  </Blend>
+               </input>
+            </Bloom>
+         </effect>
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="RapoarteButton" layoutX="977.0" layoutY="712.0" mnemonicParsing="false" onAction="#RapoarteOpenButton" style="-fx-background-color: #0F4CC1;" text="Deschide folderul cu rapoarte" textFill="#fcfbf5">
+         <effect>
+            <Bloom threshold="0.1">
+               <input>
+                  <Blend mode="SRC_ATOP" opacity="0.57">
+                     <topInput>
+                        <Lighting diffuseConstant="0.95" specularConstant="0.0" specularExponent="0.0" surfaceScale="3.33">
+                           <bumpInput>
+                              <Shadow blurType="ONE_PASS_BOX" color="#e19f9f" height="102.62" radius="86.38" width="244.9" />
+                           </bumpInput>
+                        </Lighting>
+                     </topInput>
+                  </Blend>
+               </input>
+            </Bloom>
+         </effect>
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

@@ -106,7 +106,6 @@
                   <TableColumn fx:id="dataContabilizarii" prefWidth="156.0" text="Data contabilizarii" />
               </columns>
             </TableView>
-            <TextField fx:id="nrDeFacturiDeAfisat" layoutX="176.0" layoutY="385.0" />
             <Button fx:id="validFacturaButton" layoutX="865.0" layoutY="384.0" mnemonicParsing="false" onAction="#validareCampuri" style="-fx-background-color: #0F4CC1;" text="Valideaza factura" textFill="#fcfbf5">
                <effect>
                   <Bloom threshold="0.1">

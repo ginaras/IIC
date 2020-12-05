@@ -11,14 +11,22 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class CtrlStage2Rapoarte implements Initializable {
@@ -54,6 +62,8 @@ public class CtrlStage2Rapoarte implements Initializable {
     public Button refreshButton;
     public DatePicker secondDate;
     public DatePicker firstDate;
+    public Button ExportButton;
+    public Button RapoarteButton;
 
 
     Connection connection = DriverManager.getConnection( Investitii.URL, Investitii.USER, Investitii.PASSWORD );
@@ -172,6 +182,7 @@ public class CtrlStage2Rapoarte implements Initializable {
         }catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        rsProj.close();
 //        if (firstDate.getValue()!=null) {
 //            clearDataPiker();
 //        }
@@ -267,6 +278,8 @@ public class CtrlStage2Rapoarte implements Initializable {
                 facturi++;
             }
             tableViewTotal.setItems( tabelFacturi );
+//            comboAlegeProj.setItems( FXCollections.observableArrayList( Files.readAllLines( (Paths.get( "C:/Investitii/resurse/newproj" ) ))));
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -282,10 +295,9 @@ public class CtrlStage2Rapoarte implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-//        if (firstDate.getValue()!=null) {
-//            clearDataPiker();
-//        }
-//        comboAlegeProj.setItems( FXCollections.observableArrayList( Files.readAllLines( (Paths.get( "C:/Investitii/resurse/newproj" ) ))));
+        if (firstDate.getValue()!=null) {
+            clearDataPiker();
+        }
 //        comboAlegeFz.setItems( FXCollections.observableArrayList( Files.readAllLines( (Paths.get( "C:/Investitii/resurse/fz" ) ))));
 
 
@@ -296,4 +308,64 @@ public class CtrlStage2Rapoarte implements Initializable {
 //        comboAlegeProj.setItems( FXCollections.observableArrayList( Files.readAllLines( (Paths.get( "C:/Investitii/resurse/newproj" ) ))));
 //        comboAlegeFz.setItems( FXCollections.observableArrayList( Files.readAllLines( (Paths.get( "C:/Investitii/resurse/fz" ) ))));
     }
+
+    public void ExportXlsButton ( ActionEvent actionEvent ) {
+            try {
+                Connection connection = DriverManager.getConnection(Investitii.URL, Investitii.USER, Investitii.PASSWORD );
+                Statement st = connection.createStatement();
+                ResultSet rs = st.executeQuery( "SELECT * FROM invtbl " );
+
+//Print - Crearea si prima linie a fisierilui de raport
+                LocalDateTime date0 = LocalDateTime.now();
+                DateTimeFormatter date2 = DateTimeFormatter.ofPattern( "yyyy-MM-dd 'ora' hh.mm" );
+                String replaceNume2 = date0.format( date2 );
+
+                BufferedWriter writer0 = new BufferedWriter( new FileWriter( "C:\\Investitii\\rapoarte\\detaliu_investitii-" + replaceNume2 + ".csv", false ) );
+                writer0.append( "nrCrt; furnizor; nrFactura; dataFacturii; dataContabilizarii; valoare; tva; valTot; contract; contInv; contFz; nrProiect; deviz; org; respProiect" );
+                writer0.close();
+//Parcurgerea BD si extragerea datelor iterate through the java resultset
+                while (rs.next()) {
+                    Integer nrCrtPrint = rs.getInt( "nrCrt" );
+                    String furnizorPrint = rs.getString( "furnizor" );
+                    String nrFacturaPrint = rs.getString( "nrFactura" );
+                    Date dataFacturiiPrint = rs.getDate( "dataFacturii" );
+                    Date dataContabilizariiPrint = rs.getDate( "dataContabilizarii" );
+                    String valoarePrint = rs.getString( "valoare" );
+                    String tvaPrint = rs.getString( "tva" );
+                    String valTotPrint = rs.getString( "valTot" );
+                    String contractPrint = rs.getString( "contract" );
+                    String contInvPrint = rs.getString( "contInv" );
+                    String contFzPrint = rs.getString( "contFz" );
+                    String nrProiectPrint = rs.getString( "nrProiect" );
+                    String devizPrint = rs.getString( "deviz" );
+                    String orgPrint = rs.getString( "org" );
+                    String respProiectPrint = rs.getString( "respProiect" );
+
+//print - adaugarea datelor in fisier
+                    String datele = (Integer) nrCrtPrint + ";" + (String) furnizorPrint + ";" + (String) nrFacturaPrint + ";" +dataFacturiiPrint+";"+ dataContabilizariiPrint+";"+ (String) valoarePrint + ";"+(String) tvaPrint + ";"  + (String) valTotPrint + ";" + (String) contractPrint + ";" + (String) contInvPrint + ";" + (String) contFzPrint
+                            + ";" +(String) nrProiectPrint  + ";" +(String) devizPrint + ";" +(String)orgPrint  + ";" +(String)respProiectPrint;
+                    BufferedWriter writer = new BufferedWriter( new FileWriter( "C:\\Investitii\\rapoarte\\detaliu_investitii-" + replaceNume2 + ".csv", true ) );
+                    writer.append( " \n" );
+                    writer.append( datele );
+                    writer.close();
+                }
+                Desktop desktop = null;
+                desktop.getDesktop().open( new File( "c:\\Investitii\\rapoarte\\detaliu_investitii-" + replaceNume2 + ".csv" ) );
+
+            } catch (IOException | SQLException ioException) {
+                ioException.printStackTrace();
+            }
+    }
+
+    public void RapoarteOpenButton ( ActionEvent actionEvent ) {
+        Desktop desktop = null;
+        try {
+            desktop.getDesktop().open( new File( "c:\\Investitii\\rapoarte" ) );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
+
+

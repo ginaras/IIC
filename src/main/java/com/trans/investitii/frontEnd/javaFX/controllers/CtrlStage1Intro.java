@@ -140,8 +140,8 @@ public class CtrlStage1Intro implements Initializable {
                valTot = valTot / 100;
 
 ////            statement.executeUpdate( new StringBuilder().append( "INSERT INTO investitiitable (furnizor, nrFactura, dataFacturii, dataContabilizarii, valoare, tva, valTot, contract, contInv, contFz, nrProiect, deviz, org, respProiect) VALUES(' " ).append( comBoboxFz.getValue() ).append( " ',' " ).append( fieldNrFact.getText() ).append( "','" ).append( fieldDataFactura.getValue() ).append( " ',' " ).append( fieldDataGL.getValue() ).append( "','" ).append( val ).append( " ',' " ).append( tva ).append( " ' , '" ).append( valTot ).append( " ',' " ).append( comboBoxContract.getValue() ).append( "','" ).append( comboBoxCtInv.getValue() ).append( "','" ).append( cBCtFz.getValue() ).append( "','" ).append( cBProjNr.getValue() ).append( "','" ).append( comboBoxDeviz.getValue() ).append( "','" ).append( comboBoxOrg.getValue() ).append( "','" ).append( comboBoxRespProj.getValue() ).append( "')" ).toString() );
-               statement.executeUpdate( "INSERT INTO invtbl (furnizor, nrFactura, dataFacturii, dataContabilizarii, valoare, tva, valTot, contract, contInv, contFz, nrProiect, deviz, org, respProiect) VALUES(' " + comBoboxFz.getValue() + " ',' " + fieldNrFact.getText() + "','" + fieldDataFactura.getValue() + " ',' " + fieldDataGL.getValue() + "','" + val + " ',' " + tva + " ' , '" + valTot + " ',' " +
-                       comboBoxContract.getValue() + "','" + comboBoxCtInv.getValue() + "','" + cBCtFz.getValue() + "','" + cBProjNr.getValue() + "','" + comboBoxDeviz.getValue() + "','" + comboBoxOrg.getValue() + "','" + comboBoxRespProj.getValue() + "')" );
+               statement.executeUpdate( "INSERT INTO invtbl (furnizor, nrFactura, dataFacturii, dataContabilizarii, valoare, tva, valTot, contract, contInv, contFz, nrProiect, deviz, org, respProiect) VALUES('"+comBoboxFz.getValue()+"','" +fieldNrFact.getText()+ "','" +fieldDataFactura.getValue()+ " ',' " +fieldDataGL.getValue() + "','" +val+ " ',' " +tva+ " ' , '" +valTot+ " ',' " +
+                       comboBoxContract.getValue()+ "','" +comboBoxCtInv.getValue()+ "','" +cBCtFz.getValue()+ "','" +cBProjNr.getValue()+ "','" +comboBoxDeviz.getValue() +"','"+comboBoxOrg.getValue()+"','"+comboBoxRespProj.getValue()+"')" );
 
                Alert confirm = new Alert( Alert.AlertType.INFORMATION );
                confirm.setHeaderText( "Factura a fost adaugata" );
@@ -171,7 +171,6 @@ public class CtrlStage1Intro implements Initializable {
 
         try {
             myListFz = Files.readAllLines( ( Paths.get("C:/Investitii/resurse/fz") ));
-            // myListCUI = Files.readAllLines( ( Paths.get("C:/Investitii/resurse/cui") ));///.collect( Collectors.toList());
             myListContract = Files.readAllLines( ( Paths.get("C:/Investitii/resurse/contract") ));
             myListCtInvest = Files.readAllLines( ( Paths.get("C:/Investitii/resurse/ctInv") ));
             myListCtFz = Files.readAllLines( ( Paths.get("C:/Investitii/resurse/ctFz") ));
@@ -179,7 +178,6 @@ public class CtrlStage1Intro implements Initializable {
             myListOrg = Files.readAllLines( ( Paths.get("C:/Investitii/resurse/org") ));
             myListRespProj = Files.readAllLines( ( Paths.get("C:/Investitii/resurse/respproj") ));
             myListProj = Files.readAllLines( (Paths.get( "C:/Investitii/resurse/newproj" ) ));
-//            myListProj = Files.AllLines( (Paths.get( "C:/Investitii/resurse/newproj" ) ));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -203,10 +201,8 @@ public class CtrlStage1Intro implements Initializable {
         tableView.setItems(getInvestitii()  );
 
         invest = FXCollections.observableArrayList();
-
         try {
-
-//            int factura=0;
+            int factura=0;
             while (rs1.next()) {
                 if(rs1.isLast()){invest.addAll( new Investitii(
                         rs1.getObject( "furnizor" ),
@@ -217,12 +213,10 @@ public class CtrlStage1Intro implements Initializable {
                         rs1.getObject( "respProiect" ),
                         rs1.getString("dataContabilizarii")
                 ));}}
-
             tableView.setItems( invest);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
     }
 
     private void clearData() throws IOException {
