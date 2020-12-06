@@ -10,7 +10,7 @@ public class Investitii {
     public   static String USER= "root";
     public   static String PASSWORD= "root";
     public static final String CREATE_DATABASE = "CREATE DATABASE IF NOT EXISTS invDB";
-    public static final String USE_DATABASE = "USE invDb";
+    public static final String USE_DATABASE = "USE invDB";
     public static String URL0 = String.format( "jdbc:mysql://localhost:3306/%s?useLegacyDateTimeCode=false&serverTimezone=GMT","sys" );
     public static String URL = String.format( "jdbc:mysql://localhost:3306/%s?useLegacyDateTimeCode=false&serverTimezone=GMT","invDB" );
     public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS invTBL (nrCrt INT(5) AUTO_INCREMENT PRIMARY KEY, furnizor CHAR(70) not null, nrFactura char(20) , dataFacturii DATE, dataContabilizarii DATE, valoare varCHAR(20), tva varCHAR(20), valTot varCHAR(20), contract CHAR(10), contInv CHAR(20), contFz CHAR(20), nrProiect CHAR(20), deviz CHAR(20), org CHAR(10), respProiect CHAR(50))";
@@ -34,8 +34,6 @@ public class Investitii {
     private Object deviz;
     private Object org;
     private Object respProiect;
-
-
 
 
     public Object getFurnizor () {
@@ -162,6 +160,20 @@ public class Investitii {
         this.dataContabilizarii= LocalDate.parse(dataContabilizarii);
     }
     // constructor pt rapoarte
+//    public Investitii ( String furnizor, String nrFactura, String valoare, String dataContabilizarii, String respProiect, String contract, String contInv, String contFz, String nrProiect ) {
+//        this.furnizor=furnizor;
+//        this.valoare= valoare;
+//        this.nrFactura=nrFactura;
+//        this.dataContabilizarii= LocalDate.parse(dataContabilizarii);
+//        this.respProiect =respProiect;
+//        this.contract = contract;
+//        this.contInv=contInv;
+//        this.contFz = contFz;
+//        this.nrProiect= nrProiect;
+//
+//
+//    }
+
     public Investitii ( String furnizor, String nrFactura, String valoare, String dataContabilizarii, String respProiect, String contract, String contInv, String contFz, String nrProiect ) {
         this.furnizor=furnizor;
         this.valoare= valoare;
@@ -172,7 +184,6 @@ public class Investitii {
         this.contInv=contInv;
         this.contFz = contFz;
         this.nrProiect= nrProiect;
-
 
     }
 

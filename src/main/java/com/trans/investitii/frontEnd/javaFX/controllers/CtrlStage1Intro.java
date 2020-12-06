@@ -115,7 +115,7 @@ public class CtrlStage1Intro implements Initializable {
 
             Investitii newInvestitii = new Investitii(
                     comBoboxFz.getValue(),
-                    fieldNrFact.getText(),
+                    fieldNrFact.getText().toUpperCase(),
                     fieldValFact.getText(),
                     fieldDataFactura.getValue(),
                     fieldDataGL.getValue(),
@@ -140,7 +140,7 @@ public class CtrlStage1Intro implements Initializable {
                valTot = valTot / 100;
 
 ////            statement.executeUpdate( new StringBuilder().append( "INSERT INTO investitiitable (furnizor, nrFactura, dataFacturii, dataContabilizarii, valoare, tva, valTot, contract, contInv, contFz, nrProiect, deviz, org, respProiect) VALUES(' " ).append( comBoboxFz.getValue() ).append( " ',' " ).append( fieldNrFact.getText() ).append( "','" ).append( fieldDataFactura.getValue() ).append( " ',' " ).append( fieldDataGL.getValue() ).append( "','" ).append( val ).append( " ',' " ).append( tva ).append( " ' , '" ).append( valTot ).append( " ',' " ).append( comboBoxContract.getValue() ).append( "','" ).append( comboBoxCtInv.getValue() ).append( "','" ).append( cBCtFz.getValue() ).append( "','" ).append( cBProjNr.getValue() ).append( "','" ).append( comboBoxDeviz.getValue() ).append( "','" ).append( comboBoxOrg.getValue() ).append( "','" ).append( comboBoxRespProj.getValue() ).append( "')" ).toString() );
-               statement.executeUpdate( "INSERT INTO invtbl (furnizor, nrFactura, dataFacturii, dataContabilizarii, valoare, tva, valTot, contract, contInv, contFz, nrProiect, deviz, org, respProiect) VALUES('"+comBoboxFz.getValue()+"','" +fieldNrFact.getText()+ "','" +fieldDataFactura.getValue()+ " ',' " +fieldDataGL.getValue() + "','" +val+ " ',' " +tva+ " ' , '" +valTot+ " ',' " +
+               statement.executeUpdate( "INSERT INTO invTBL (furnizor, nrFactura, dataFacturii, dataContabilizarii, valoare, tva, valTot, contract, contInv, contFz, nrProiect, deviz, org, respProiect) VALUES('"+comBoboxFz.getValue()+"','" +fieldNrFact.getText().toUpperCase()+ "','" +fieldDataFactura.getValue()+ " ',' " +fieldDataGL.getValue() + "','" +val+ " ',' " +tva+ " ' , '" +valTot+ " ',' " +
                        comboBoxContract.getValue()+ "','" +comboBoxCtInv.getValue()+ "','" +cBCtFz.getValue()+ "','" +cBProjNr.getValue()+ "','" +comboBoxDeviz.getValue() +"','"+comboBoxOrg.getValue()+"','"+comboBoxRespProj.getValue()+"')" );
 
                Alert confirm = new Alert( Alert.AlertType.INFORMATION );
@@ -178,6 +178,7 @@ public class CtrlStage1Intro implements Initializable {
             myListOrg = Files.readAllLines( ( Paths.get("C:/Investitii/resurse/org") ));
             myListRespProj = Files.readAllLines( ( Paths.get("C:/Investitii/resurse/respproj") ));
             myListProj = Files.readAllLines( (Paths.get( "C:/Investitii/resurse/newproj" ) ));
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -220,18 +221,18 @@ public class CtrlStage1Intro implements Initializable {
     }
 
     private void clearData() throws IOException {
-        comBoboxFz.setItems( FXCollections.observableArrayList(Files.readAllLines( ( Paths.get("C:/Investitii/resurse/fz") ))));
+        comBoboxFz.getSelectionModel().select( null);
         fieldNrFact.setText( null );
         fieldValFact.setText( null );
         fieldDataFactura.getEditor().clear();
         fieldDataGL.getEditor().clear();
-        comboBoxRespProj.setItems( FXCollections.observableArrayList(Files.readAllLines( ( Paths.get("C:/Investitii/resurse/respproj") ))));
-        comboBoxContract.setItems( FXCollections.observableArrayList(Files.readAllLines( ( Paths.get("C:/Investitii/resurse/contract") ))));
-        comboBoxCtInv.setItems( FXCollections.observableArrayList(Files.readAllLines( ( Paths.get("C:/Investitii/resurse/ctInv") ))));
-        cBCtFz.setItems( FXCollections.observableArrayList(Files.readAllLines( ( Paths.get("C:/Investitii/resurse/ctFz") ))));
-        cBProjNr.setItems( FXCollections.observableArrayList(Files.readAllLines( ( Paths.get("C:/Investitii/resurse/newproj") ))));
-        comboBoxDeviz.setItems( FXCollections.observableArrayList(Files.readAllLines( ( Paths.get("C:/Investitii/resurse/deviz") ))));
-        comboBoxOrg.setItems( FXCollections.observableArrayList(Files.readAllLines( ( Paths.get("C:/Investitii/resurse/org") ))));
+        comboBoxRespProj.getSelectionModel().select( null);
+        comboBoxContract.getSelectionModel().select( null);
+        comboBoxCtInv.getSelectionModel().select( null);
+        cBCtFz.getSelectionModel().select( null);
+        cBProjNr.getSelectionModel().select( null);
+        comboBoxDeviz.getSelectionModel().select( null);
+        comboBoxOrg.getSelectionModel().select( null);
     }
 
     public void validareCampuri() throws InterruptedException {
