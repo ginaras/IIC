@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+
 public class Main extends Application {
 
     @Override

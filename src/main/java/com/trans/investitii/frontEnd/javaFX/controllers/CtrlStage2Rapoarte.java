@@ -10,12 +10,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -25,31 +30,25 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 public class CtrlStage2Rapoarte implements Initializable {
-    @FXML
-    public Button buttonBackSt0;
-    @FXML
-    public Button buttonSt1Intro;
-    @FXML
-    public TableView<Investitii> tableViewTotal;
-    @FXML
-    public TableColumn<Investitii, String> furnizorColumn;
-    @FXML
-    public TableColumn<Investitii, String> valoareFactColumn;
-    @FXML
-    public TableColumn<Investitii, String> dataCtbColumn;
-    @FXML
-    public TableColumn<Investitii, String> respProjColumn;
-    @FXML
-    public TableColumn<Investitii, String> contractColumn;
-    @FXML
-    public TableColumn<Investitii, String> contInvColumn;
-    @FXML
-    public TableColumn<Investitii, String> contFzColumn;
+
+    @FXML    public Button buttonBackSt0;
+    @FXML    public Button buttonSt1Intro;
+    @FXML    public TableView<Investitii> tableViewTotal;
+    @FXML    public TableColumn<Investitii, String> furnizorColumn;
+    @FXML    public TableColumn<Investitii, String> valoareFactColumn;
+    @FXML    public TableColumn<Investitii, String> dataCtbColumn;
+    @FXML    public TableColumn<Investitii, String> respProjColumn;
+    @FXML    public TableColumn<Investitii, String> contractColumn;
+    @FXML    public TableColumn<Investitii, String> contInvColumn;
+    @FXML    public TableColumn<Investitii, String> contFzColumn;
     @FXML
     public TableColumn<Investitii, String> nrProjColumn;
     public Label valoareaTotala;
@@ -58,12 +57,14 @@ public class CtrlStage2Rapoarte implements Initializable {
     public TableColumn<Object, Object> nrFactColumn;
     public ComboBox<String> comboAlegeProj;
     public ComboBox<String> comboAlegeFz;
-    public Button alegePerButton;
+    public Button selectButton;
     public Button refreshButton;
     public DatePicker secondDate;
     public DatePicker firstDate;
     public Button ExportButton;
     public Button RapoarteButton;
+    public Button ExportSelectieButton;
+    public Button buttonStage3Sumar;
 
 
     Connection connection = DriverManager.getConnection( Investitii.URL, Investitii.USER, Investitii.PASSWORD );
@@ -91,8 +92,16 @@ public class CtrlStage2Rapoarte implements Initializable {
         windowStage1Intro.setScene( tableViewScene );
         windowStage1Intro.show();
     }
+    public void goToStage3Sumar ( ActionEvent event ) throws IOException {
+        Parent stage1Intro = FXMLLoader.load( getClass().getResource( "/fxml/Stage3RapoarteInv.fxml" ) );
+        Scene tableViewScene = new Scene( stage1Intro );
+        Stage windowStage1Intro = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        windowStage1Intro.setScene( tableViewScene );
+        windowStage1Intro.show();
+    }
 
     @Override
+
     public void initialize ( URL location, ResourceBundle resources ) {
         this.location = location;
         this.resources = resources;
@@ -121,7 +130,9 @@ public class CtrlStage2Rapoarte implements Initializable {
                         rs1.getString( "contFz" ),
                         rs1.getString( "nrProiect" ) ) );
                 facturi++;
+
             }
+            valoareaTotala.setTextAlignment( TextAlignment.RIGHT );
 
             tableViewTotal.setItems( tabelFacturi );
         } catch (SQLException throwables) {
@@ -130,7 +141,7 @@ public class CtrlStage2Rapoarte implements Initializable {
 
         try {
             Statement stm = connection.createStatement();
-            ResultSet total = stm.executeQuery( "SELECT SUM(valoare) AS valoare FROM invTBL  " );
+            ResultSet total = stm.executeQuery( "SELECT ROUND(SUM(valoare),2) AS valoare FROM invTBL  " );
             while (total.next()) {
                 double valoarea = total.getDouble( "valoare" );
                 double valTotala = ++valoarea;
@@ -141,8 +152,6 @@ public class CtrlStage2Rapoarte implements Initializable {
         }
         try {
             comboAlegeProj.setItems( FXCollections.observableArrayList( Files.readAllLines( (Paths.get( "C:/Investitii/resurse/newproj" )) ) ) );
-//            comboAlegeFz.setItems( FXCollections.observableArrayList( Files.readAllLines( (Paths.get( "C:/Investitii/resurse/newproj" ) ))));
-//            comboAlegeFz.setItems( FXCollections.observableArrayList( Files.readAllLines( (Paths.get( "C:/Investitii/resurse/respproj" ) ))));
             comboAlegeFz.setItems( FXCollections.observableArrayList( Files.readAllLines( (Paths.get( "C:/Investitii/resurse/fz" )) ) ) );
         } catch (IOException e) {
             e.printStackTrace();
@@ -150,20 +159,26 @@ public class CtrlStage2Rapoarte implements Initializable {
 
     }
 
-    public void comboAlegePer() throws SQLException, IOException {
+    public void selectButtton () throws SQLException, IOException {
 
     String query = "SELECT * FROM invTBL WHERE ";
-    String query2 = "SELECT furnizor, nrFactura, valoare, dataContabilizarii,respProiect, contract ,contInv, contFz, nrProiect, round(sum(valoare), 2) as 'totalProiect' FROM invTBL WHERE ";
+    String query2 = "SELECT round(SUM(valoare), 2) as 'totalProiect' FROM invTBL WHERE ";
 
     Object valueProj = comboAlegeProj.getValue();
     Object valueFz = comboAlegeFz.getValue();
     Object valueFDdate = firstDate.getValue();
     Object valueSDate =secondDate.getValue();
 
+        if(valueProj ==null && valueFz==null && valueFDdate==null && valueSDate==null)    {
+            Alert alert = new Alert( Alert.AlertType.INFORMATION );
+            alert.setHeaderText( "Da-mi un criteriu sa-ti pot arata ceva" );
+            alert.showAndWait();
+            return;
+        }
+
         if(valueProj !=null && valueFz==null && valueFDdate==null && valueSDate==null)    {
                 query += "nrProiect='"+valueProj.toString()+"'";
                 query2 += "nrProiect='"+valueProj.toString()+"'";
-                System.out.println("if1:  "+query+" \n"+query2);
          }
 
         if(valueFz !=null && valueFDdate==null && valueSDate==null) {
@@ -174,7 +189,6 @@ public class CtrlStage2Rapoarte implements Initializable {
                 } else {
                     query  += "nrProiect='"+valueProj.toString()+"' AND furnizor='"+valueFz.toString()+ "' ";
                     query2 += "nrProiect='"+valueProj.toString()+"' AND furnizor='"+valueFz.toString()+ "' ";
-                    System.out.println("if2.2 + \n"+query+"\n"+query2);
                 }
          }
 
@@ -197,7 +211,9 @@ public class CtrlStage2Rapoarte implements Initializable {
             Alert alert = new Alert( Alert.AlertType.INFORMATION );
             alert.setHeaderText( "Trebuie completate ambele campuri de date!" );
             alert.showAndWait();
+            return;
         }
+
     tabelFacturi =FXCollections.observableArrayList();
     ResultSet rsProj = stm.executeQuery( query );
      try {
@@ -234,125 +250,13 @@ public class CtrlStage2Rapoarte implements Initializable {
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        } System.out.println(totalProiect);
+        }
         valoareaTotala.setText( String.valueOf( totalProiect ) );
 
-
-
-
     }
-
-    public void comboSelectProj ( ActionEvent event ) throws SQLException, IOException {
-//
-//        tabelFacturi = FXCollections.observableArrayList();
-//        ResultSet rsProj =stm.executeQuery( "SELECT * FROM invTBL WHERE nrProiect = '"+comboAlegeProj.getValue().toString()+"'" );
-//        try {
-//            int facturi = 0;
-//            while (rsProj.next()) {
-//                tabelFacturi.addAll( new Investitii(
-//                        rsProj.getString( "furnizor" ),
-//                        rsProj.getString( "nrFactura" ),
-//                        rsProj.getString( "valoare" ),
-//                        rsProj.getString( "dataContabilizarii" ),
-//                        rsProj.getString( "respProiect" ),
-//                        rsProj.getString( "contract" ),
-//                        rsProj.getString( "contInv" ),
-//                        rsProj.getString( "contFz" ),
-//                        rsProj.getString( "nrProiect" ) ) );
-//                facturi++;
-//            }
-//            tableViewTotal.setItems( tabelFacturi );
-//
-//            String val = "SELECT sum(valoare) as 'totalProiect' FROM invTBL WHERE nrProiect = '" + comboAlegeProj.getValue().toString() + "'  ";
-//            double totalProiect;
-//            ResultSet projVal = stm.executeQuery( val );
-//
-//            while (projVal.next()) {
-//                totalProiect = projVal.getDouble( "totalProiect" );
-//                valoareaTotala.setText( String.valueOf( totalProiect ));
-//            }
-//        }catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
-//        rsProj.close();
-//        if (firstDate.getValue()!=null) {
-//            clearDataPiker();
-//        }
-    }
-
-    public void comboSelectFZ ( ActionEvent actionEvent ) throws SQLException, IOException {
-//
-//        tabelFacturi = FXCollections.observableArrayList();
-//        ResultSet rsProj =stm.executeQuery( "SELECT * FROM invTBL WHERE furnizor = '"+comboAlegeFz.getValue().toString()+"'" );
-//        try {
-//            int facturi = 0;
-//            while (rsProj.next()) {
-//                tabelFacturi.addAll( new Investitii(
-//                        rsProj.getString( "furnizor" ),
-//                        rsProj.getString( "nrFactura" ),
-//                        rsProj.getString( "valoare" ),
-//                        rsProj.getString( "dataContabilizarii" ),
-//                        rsProj.getString( "respProiect" ),
-//                        rsProj.getString( "contract" ),
-//                        rsProj.getString( "contInv" ),
-//                        rsProj.getString( "contFz" ),
-//                        rsProj.getString( "nrProiect" ) ) );
-//                facturi++;
-//            }
-//            tableViewTotal.setItems( tabelFacturi );
-////todo mmm
-//            String val = "SELECT round(sum(valoare),2) as 'totalProiect' FROM invTBL WHERE furnizor = '" + comboAlegeFz.getValue().toString() + "'  ";
-//            double totalProiect;
-//            ResultSet projVal = stm.executeQuery( val );
-//
-//            while (projVal.next()) {
-//                totalProiect = projVal.getDouble( "totalProiect" );
-//                valoareaTotala.setText( String.valueOf( totalProiect ));
-//            }
-//        }catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
-//
-    }
-//
-//    public void comboAlegePer ( ActionEvent actionEvent ) throws SQLException, IOException {
-//        tabelFacturi = FXCollections.observableArrayList();
-//        ResultSet rsPer =stm.executeQuery( "SELECT * FROM invTBL WHERE dataContabilizarii BETWEEN '"+firstDate.getValue()+"' AND '"+secondDate.getValue()+"' " );
-//        try {
-//            int facturi = 0;
-//            while (rsPer.next()) {
-//                tabelFacturi.addAll( new Investitii(
-//                        rsPer.getString( "furnizor" ),
-//                        rsPer.getString( "nrFactura" ),
-//                        rsPer.getString( "valoare" ),
-//                        rsPer.getString( "dataContabilizarii" ),
-//                        rsPer.getString( "respProiect" ),
-//                        rsPer.getString( "contract" ),
-//                        rsPer.getString( "contInv" ),
-//                        rsPer.getString( "contFz" ),
-//                        rsPer.getString( "nrProiect" ) ) );
-//                facturi++;
-//            }
-//            tableViewTotal.setItems( tabelFacturi );
-//
-//            String valData = "SELECT sum(valoare) as 'totalData' FROM invTBL WHERE dataContabilizarii BETWEEN '"+firstDate.getValue()+"' AND '"+secondDate.getValue()+"'" ;
-//            double totalData;
-//            ResultSet projData = stm.executeQuery( valData );
-//
-//            while (projData.next()) {
-//                totalData = projData.getDouble( "totalData" );
-//                valoareaTotala.setText( String.valueOf( totalData ));
-//                System.out.println(totalData);
-//            }
-//        }catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
-//
-//    }
 
     public void refresh ( ActionEvent actionEvent ) throws SQLException, IOException {
         ResultSet rs1 = stm.executeQuery( "SELECT * FROM invTBL " );
-
         tabelFacturi = FXCollections.observableArrayList();
         try {
             int facturi = 0;
@@ -371,7 +275,6 @@ public class CtrlStage2Rapoarte implements Initializable {
                 facturi++;
             }
             tableViewTotal.setItems( tabelFacturi );
-//            comboAlegeProj.setItems( FXCollections.observableArrayList( Files.readAllLines( (Paths.get( "C:/Investitii/resurse/newproj" ) ))));
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -379,10 +282,10 @@ public class CtrlStage2Rapoarte implements Initializable {
 
         try {
             Statement stm = connection.createStatement();
-            ResultSet total = stm.executeQuery( "SELECT SUM(valoare) AS valoare FROM invTBL  " );
+            ResultSet total = stm.executeQuery( "SELECT ROUND(SUM(valoare),2) AS valoare FROM invTBL  " );
             while (total.next()) {
                 double valoarea = total.getDouble( "valoare" );
-                double valTotala = ++valoarea ;
+                double valTotala = ++valoarea;
                 valoareaTotala.setText( String.valueOf( valTotala ) );
             }
         } catch (SQLException throwables) {
@@ -452,6 +355,100 @@ public class CtrlStage2Rapoarte implements Initializable {
             e.printStackTrace();
         }
 
+    }
+
+    public void ExportSelectieXlsButton ( ActionEvent actionEvent ) throws IOException, SQLException {
+
+        String query = "SELECT * FROM invTBL WHERE ";
+
+        Object valueProj = comboAlegeProj.getValue();
+        Object valueFz = comboAlegeFz.getValue();
+        Object valueFDdate = firstDate.getValue();
+        Object valueSDate =secondDate.getValue();
+
+        if(valueProj ==null && valueFz==null && valueFDdate==null && valueSDate==null)    {
+            Alert alert = new Alert( Alert.AlertType.INFORMATION );
+            alert.setHeaderText( "Da-mi un criteriu sa-ti pot arata ceva" );
+            alert.showAndWait();
+            return;
+        }
+
+        if(valueProj !=null && valueFz==null && valueFDdate==null && valueSDate==null)    {
+            query += "nrProiect='"+valueProj.toString()+"'";
+            System.out.println("if1:  "+query);
+        }
+
+        if(valueFz !=null && valueFDdate==null && valueSDate==null) {
+            if (valueProj == null) {
+                query += " furnizor='"+valueFz.toString()+"' ";
+                System.out.println("if2.1 \n "+query);
+            } else {
+                query  += "nrProiect='"+valueProj.toString()+"' AND furnizor='"+valueFz.toString()+ "' ";
+                System.out.println("if2.2 + \n"+query);
+            }
+        }
+
+        if(valueFDdate !=null && valueSDate!=null) {
+            if (valueProj != null && valueFz != null) {
+                query += "nrProiect='" + valueProj.toString() + "' AND furnizor='" + valueFz.toString() + "' AND dataContabilizarii BETWEEN '" +valueFDdate.toString()+ "' AND '" +valueSDate.toString()+ "' ";
+            }
+            if (valueProj == null && valueFz !=null){
+                query += "furnizor='" + valueFz.toString() + "' AND dataContabilizarii BETWEEN '" +valueFDdate.toString()+ "' AND '" +valueSDate.toString()+"' ";
+            }
+            if (valueProj ==null && valueFz ==null){
+                query += "dataContabilizarii BETWEEN '" + valueFDdate.toString() + "' AND '"+ valueSDate.toString()+ "' ";
+            }
+        }
+        if ((valueFDdate ==null && valueSDate!=null) || (valueFDdate !=null && valueSDate==null)){
+            Alert alert = new Alert( Alert.AlertType.INFORMATION );
+            alert.setHeaderText( "Trebuie completate ambele campuri de date!" );
+            alert.showAndWait();
+            return;
+        }
+        try {
+            LocalDateTime date0 = LocalDateTime.now();
+        DateTimeFormatter date2 = DateTimeFormatter.ofPattern( "yyyy-MM-dd 'ora' hh.mm" );
+        String replaceNume2 = date0.format( date2 );
+
+        BufferedWriter writer0 = new BufferedWriter( new FileWriter( "C:\\Investitii\\rapoarte\\Selectie-investitii-" + replaceNume2 + ".csv", false ) );
+        writer0.append( "nrCrt; furnizor; nrFactura; dataFacturii; dataContabilizarii; valoare; tva; valTot; contract; contInv; contFz; nrProiect; deviz; org; respProiect" );
+        writer0.close();
+
+            ResultSet rsSelectXLS = stm.executeQuery( query );
+            while (rsSelectXLS.next()) {
+            Integer nrCrtPrint = rsSelectXLS.getInt( "nrCrt" );
+            String furnizorPrint = rsSelectXLS.getString( "furnizor" );
+            String nrFacturaPrint = rsSelectXLS.getString( "nrFactura" );
+            Date dataFacturiiPrint = rsSelectXLS.getDate( "dataFacturii" );
+            Date dataContabilizariiPrint = rsSelectXLS.getDate( "dataContabilizarii" );
+            String valoarePrint = rsSelectXLS.getString( "valoare" );
+            String tvaPrint = rsSelectXLS.getString( "tva" );
+            String valTotPrint = rsSelectXLS.getString( "valTot" );
+            String contractPrint = rsSelectXLS.getString( "contract" );
+            String contInvPrint = rsSelectXLS.getString( "contInv" );
+            String contFzPrint = rsSelectXLS.getString( "contFz" );
+            String nrProiectPrint = rsSelectXLS.getString( "nrProiect" );
+            String devizPrint = rsSelectXLS.getString( "deviz" );
+            String orgPrint = rsSelectXLS.getString( "org" );
+            String respProiectPrint = rsSelectXLS.getString( "respProiect" );
+
+
+            String datele = (Integer) nrCrtPrint + ";" + (String) furnizorPrint + ";" + (String) nrFacturaPrint + ";" + dataFacturiiPrint + ";" + dataContabilizariiPrint + ";" + (String) valoarePrint + ";" + (String) tvaPrint + ";" + (String) valTotPrint + ";" + (String) contractPrint + ";" + (String) contInvPrint + ";" + (String) contFzPrint
+                    + ";" + (String) nrProiectPrint + ";" + (String) devizPrint + ";" + (String) orgPrint + ";" + (String) respProiectPrint;
+            BufferedWriter writer = new BufferedWriter( new FileWriter( "C:\\Investitii\\rapoarte\\Selectie-investitii-" + replaceNume2 + ".csv", true ) );
+            writer.append( " \n" );
+            writer.append( datele );
+            writer.close();
+        }
+            Desktop desktop1 = null;
+            desktop1.getDesktop().open( new File( "c:\\Investitii\\rapoarte\\Selectie-investitii-" + replaceNume2 + ".csv" ) );
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

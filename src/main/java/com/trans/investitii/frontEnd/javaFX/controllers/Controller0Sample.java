@@ -21,9 +21,7 @@ import java.util.ResourceBundle;
 
 import static com.trans.investitii.backEnd.DBase.Investitii.*;
 
-//@Component
-//@FxmlView ("sample.fxml")
-public class Controller0Sample implements Initializable { //asta este clasa doar pt javaFX
+public class Controller0Sample implements Initializable {
 
 
     @FXML
@@ -38,6 +36,7 @@ public class Controller0Sample implements Initializable { //asta este clasa doar
     public Button adminOrg;
     public Button goToStageBDelete;
     public Button goToStage2Rapoarte;
+    public Button buttonStage3Sumar;
 
     public void goToStage1Intro( ActionEvent event ) throws IOException, SQLException {
         getConectionNew();
@@ -54,7 +53,14 @@ public class Controller0Sample implements Initializable { //asta este clasa doar
         Stage windowStage1Intro = (Stage) ((Node) event.getSource()).getScene().getWindow();
         windowStage1Intro.setScene( tableViewScene );
         windowStage1Intro.show();
-
+    }
+    public void goToStage3Sumar ( ActionEvent event ) throws SQLException, IOException {
+        getConectionNew();
+        Parent stage1Intro = FXMLLoader.load( getClass().getResource( "/fxml/Stage3RapoarteInv.fxml" ) );
+        Scene tableViewScene = new Scene( stage1Intro );
+        Stage windowStage1Intro = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        windowStage1Intro.setScene( tableViewScene );
+        windowStage1Intro.show();
     }
     public Connection getConectionNew () throws SQLException {
         Connection connection =DriverManager.getConnection( Investitii.URL0, Investitii.USER, Investitii.PASSWORD );

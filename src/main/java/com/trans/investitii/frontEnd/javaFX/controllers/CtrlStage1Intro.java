@@ -107,6 +107,7 @@ public class CtrlStage1Intro implements Initializable {
 //        validareCampuri();
         addFactToSQL( connection );
         clearData();
+        addFacturaButtonId.setDisable( true );
 
     }
     public void addFactToSQL (Connection connection){
@@ -139,7 +140,6 @@ public class CtrlStage1Intro implements Initializable {
                valTot = Math.round( valTot * 100 );
                valTot = valTot / 100;
 
-////            statement.executeUpdate( new StringBuilder().append( "INSERT INTO investitiitable (furnizor, nrFactura, dataFacturii, dataContabilizarii, valoare, tva, valTot, contract, contInv, contFz, nrProiect, deviz, org, respProiect) VALUES(' " ).append( comBoboxFz.getValue() ).append( " ',' " ).append( fieldNrFact.getText() ).append( "','" ).append( fieldDataFactura.getValue() ).append( " ',' " ).append( fieldDataGL.getValue() ).append( "','" ).append( val ).append( " ',' " ).append( tva ).append( " ' , '" ).append( valTot ).append( " ',' " ).append( comboBoxContract.getValue() ).append( "','" ).append( comboBoxCtInv.getValue() ).append( "','" ).append( cBCtFz.getValue() ).append( "','" ).append( cBProjNr.getValue() ).append( "','" ).append( comboBoxDeviz.getValue() ).append( "','" ).append( comboBoxOrg.getValue() ).append( "','" ).append( comboBoxRespProj.getValue() ).append( "')" ).toString() );
                statement.executeUpdate( "INSERT INTO invTBL (furnizor, nrFactura, dataFacturii, dataContabilizarii, valoare, tva, valTot, contract, contInv, contFz, nrProiect, deviz, org, respProiect) VALUES('"+comBoboxFz.getValue()+"','" +fieldNrFact.getText().toUpperCase()+ "','" +fieldDataFactura.getValue()+ " ',' " +fieldDataGL.getValue() + "','" +val+ " ',' " +tva+ " ' , '" +valTot+ " ',' " +
                        comboBoxContract.getValue()+ "','" +comboBoxCtInv.getValue()+ "','" +cBCtFz.getValue()+ "','" +cBProjNr.getValue()+ "','" +comboBoxDeviz.getValue() +"','"+comboBoxOrg.getValue()+"','"+comboBoxRespProj.getValue()+"')" );
 
@@ -258,11 +258,7 @@ public class CtrlStage1Intro implements Initializable {
             String f = fieldValFact.getText();
 
             if (f.matches( "\\d+(\\.\\d\\d)" )) {
-//                double round =Math.round(s*100);
-//                double roundAt2= round/100;
-//                fieldValFact.setText( String.valueOf( roundAt2 ) );
-//
-//            System.out.println(roundAt2);
+
             }
 
         } catch (NumberFormatException e) {
