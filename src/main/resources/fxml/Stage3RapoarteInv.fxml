@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
+
 <AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.trans.investitii.frontEnd.javaFX.controllers.CtrlStage3RapoarteInv">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="20.0" fill="#065bab" height="110.0" layoutX="5.0" layoutY="3.0" stroke="BLACK" strokeDashOffset="5.0" strokeLineJoin="BEVEL" strokeWidth="10.0" width="1190.0" />
@@ -140,12 +143,6 @@
       <Label layoutX="810.0" layoutY="571.0" text="pe proiectul:" />
       <Label contentDisplay="RIGHT" layoutX="991.0" layoutY="571.0" text="pe furnizorul:" />
       <Label layoutX="522.0" layoutY="571.0" text="organizatia:" />
-      <DatePicker fx:id="dataFinala" layoutX="568.0" layoutY="64.0" style="-fx-background-radius: 10;" />
-      <Label layoutX="427.0" layoutY="62.0" text="La data de" textFill="WHITE">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
       <Button fx:id="buttonBackSt0" layoutX="14.0" layoutY="748.0" mnemonicParsing="false" onAction="#goOnSt0" prefHeight="37.0" prefWidth="175.0" style="-fx-background-color: #0F4CC1; -fx-background-radius: 10;" text="Meniul principal" textFill="#fcfbf5">
          <effect>
             <Bloom threshold="0.1">
