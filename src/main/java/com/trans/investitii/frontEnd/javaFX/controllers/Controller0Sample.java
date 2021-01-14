@@ -37,6 +37,7 @@ public class Controller0Sample implements Initializable {
     public Button goToStageBDelete;
     public Button goToStage2Rapoarte;
     public Button buttonStage3Sumar;
+    public Button goToStage4Pif;
 
     public void goToStage1Intro( ActionEvent event ) throws IOException, SQLException {
         getConectionNew();
@@ -62,6 +63,15 @@ public class Controller0Sample implements Initializable {
         windowStage1Intro.setScene( tableViewScene );
         windowStage1Intro.show();
     }
+    public void goToStage4Pif ( ActionEvent event ) throws IOException, SQLException {
+        getConectionNew();
+        Parent stage1Intro = FXMLLoader.load( getClass().getResource( "/fxml/Stage4Pif.fxml" ) );
+        Scene tableViewScene = new Scene( stage1Intro );
+        Stage windowStage1Intro = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        windowStage1Intro.setScene( tableViewScene );
+        windowStage1Intro.show();
+
+    }
     public Connection getConectionNew () throws SQLException {
         Connection connection =DriverManager.getConnection( Investitii.URL0, Investitii.USER, Investitii.PASSWORD );
         Statement statement = connection.createStatement();
@@ -77,13 +87,13 @@ public class Controller0Sample implements Initializable {
             try{
                 if(statement!=null)
                     statement.close();
-            }catch(SQLException se2){
+            }catch(SQLException throwables){
             }
             try{
                 if(connection!=null)
                     connection.close();
-            }catch(SQLException se){
-                se.printStackTrace();
+            }catch(SQLException throwables){
+
             }
         }
         return null;
@@ -258,5 +268,7 @@ public class Controller0Sample implements Initializable {
             }
         }
     }
+
+
 }
 

@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.shape.*?>
-<?import javafx.embed.swing.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <GridPane alignment="center" hgap="10" prefHeight="800" prefWidth="1200" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.trans.investitii.frontEnd.javaFX.controllers.Controller0Sample">
    <columnConstraints>
       <ColumnConstraints />
@@ -23,14 +18,16 @@
    <children>
       <AnchorPane cacheHint="SPEED" prefHeight="785.0" prefWidth="1191.0" style="-fx-background-color: fff;">
          <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="430.0" layoutX="18.0" layoutY="301.0" stroke="BLACK" strokeType="INSIDE" width="468.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="309.0" layoutX="784.0" layoutY="153.0" stroke="BLACK" strokeType="INSIDE" width="402.0" />
             <Rectangle arcHeight="5.0" arcWidth="20.0" fill="#065bab" height="110.0" layoutX="5.0" layoutY="-3.0" stroke="BLACK" strokeDashOffset="5.0" strokeLineJoin="BEVEL" strokeWidth="10.0" width="1190.0" />
             <Text fill="WHITE" fontSmoothingType="LCD" layoutX="332.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Program de evidenta a imobilizarilor in curs">
                <font>
                   <Font size="30.0" />
                </font>
             </Text>
-            <Text layoutX="1069.0" layoutY="748.0" strokeType="OUTSIDE" strokeWidth="0.0" text="bySorinGinara" />
-            <Button fx:id="goToStage1Intro" layoutX="930.0" layoutY="365.0" mnemonicParsing="false" onAction="#goToStage1Intro" style="-fx-background-color: #0F4CC1;" text="Intrare in program" textFill="#fcfbf5">
+            <Text layoutX="1093.0" layoutY="752.0" strokeType="OUTSIDE" strokeWidth="0.0" text="bySorinGinara" />
+            <Button fx:id="goToStage1Intro" layoutX="820.0" layoutY="225.0" mnemonicParsing="false" onAction="#goToStage1Intro" style="-fx-background-color: #0F4CC1; -fx-background-radius: 10;" text="Introducere facturi" textFill="#fcfbf5">
                <effect>
                   <Bloom threshold="0.1">
                      <input>
@@ -49,30 +46,8 @@
                <font>
                   <Font size="16.0" />
                </font></Button>
-            <Text layoutX="104.0" layoutY="357.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Zona Adminstrativa" />
-            <Button fx:id="adminFZ" layoutX="92.0" layoutY="377.0" mnemonicParsing="false" onAction="#goOnAdminFz" style="-fx-background-color: #0F4CC1;" text="Administrare furnizori" textFill="WHITE">
-               <effect>
-                  <Bloom threshold="0.1">
-                     <input>
-                        <Blend mode="SRC_ATOP" opacity="0.57">
-                           <topInput>
-                              <Lighting diffuseConstant="0.95" specularConstant="0.0" specularExponent="0.0" surfaceScale="3.33">
-                                 <bumpInput>
-                                    <Shadow blurType="ONE_PASS_BOX" color="#e19f9f" height="102.62" radius="86.38" width="244.9" />
-                                 </bumpInput>
-                                 <light>
-                                    <Light.Distant color="#eb9090" />
-                                 </light>
-                              </Lighting>
-                           </topInput>
-                        </Blend>
-                     </input>
-                  </Bloom>
-               </effect>
-               <font>
-                  <Font size="16.0" />
-               </font></Button>
-            <Button fx:id="adminContracte" layoutX="93.0" layoutY="420.0" mnemonicParsing="false" onAction="#goOnadminContracte" style="-fx-background-color: #0F4CC1;" text="Administrare contracte" textFill="WHITE">
+            <Text layoutX="70.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Zona Adminstrativa" />
+            <Button fx:id="adminFZ" layoutX="58.0" layoutY="380.0" mnemonicParsing="false" onAction="#goOnAdminFz" style="-fx-background-color: #0F4CC1;" text="Administrare furnizori" textFill="WHITE">
                <effect>
                   <Bloom threshold="0.1">
                      <input>
@@ -94,7 +69,7 @@
                <font>
                   <Font size="16.0" />
                </font></Button>
-            <Button fx:id="adminCtInvest" layoutX="92.0" layoutY="462.0" mnemonicParsing="false" onAction="#goOnAdminCtInvest" style="-fx-background-color: #0F4CC1;" text="Administrare conturi investitii" textFill="WHITE">
+            <Button fx:id="adminContracte" layoutX="59.0" layoutY="423.0" mnemonicParsing="false" onAction="#goOnadminContracte" style="-fx-background-color: #0F4CC1;" text="Administrare contracte" textFill="WHITE">
                <effect>
                   <Bloom threshold="0.1">
                      <input>
@@ -116,7 +91,7 @@
                <font>
                   <Font size="16.0" />
                </font></Button>
-            <Button fx:id="adminCtFz" layoutX="92.0" layoutY="504.0" mnemonicParsing="false" onAction="#goOnAdminCtFz" style="-fx-background-color: #0F4CC1;" text="Administrare conturi furnizori" textFill="WHITE">
+            <Button fx:id="adminCtInvest" layoutX="58.0" layoutY="465.0" mnemonicParsing="false" onAction="#goOnAdminCtInvest" style="-fx-background-color: #0F4CC1;" text="Administrare conturi investitii" textFill="WHITE">
                <effect>
                   <Bloom threshold="0.1">
                      <input>
@@ -138,7 +113,7 @@
                <font>
                   <Font size="16.0" />
                </font></Button>
-            <Button fx:id="adminNrProiect" layoutX="92.0" layoutY="546.0" mnemonicParsing="false" onAction="#goOnAdminNrProiect" style="-fx-background-color: #0F4CC1;" text="Administrare nr proiect" textFill="WHITE">
+            <Button fx:id="adminCtFz" layoutX="58.0" layoutY="507.0" mnemonicParsing="false" onAction="#goOnAdminCtFz" style="-fx-background-color: #0F4CC1;" text="Administrare conturi furnizori" textFill="WHITE">
                <effect>
                   <Bloom threshold="0.1">
                      <input>
@@ -160,7 +135,7 @@
                <font>
                   <Font size="16.0" />
                </font></Button>
-            <Button fx:id="adminRespProiect" layoutX="92.0" layoutY="588.0" mnemonicParsing="false" onAction="#goOnAdminRespProiect" style="-fx-background-color: #0F4CC1;" text="Administrare responsabili de proiect" textFill="WHITE">
+            <Button fx:id="adminNrProiect" layoutX="58.0" layoutY="549.0" mnemonicParsing="false" onAction="#goOnAdminNrProiect" style="-fx-background-color: #0F4CC1;" text="Administrare nr proiect" textFill="WHITE">
                <effect>
                   <Bloom threshold="0.1">
                      <input>
@@ -182,7 +157,7 @@
                <font>
                   <Font size="16.0" />
                </font></Button>
-            <Button fx:id="adminDeviz" layoutX="93.0" layoutY="630.0" mnemonicParsing="false" onAction="#goOnAdminDeviz" style="-fx-background-color: #0F4CC1;" text="Administrare devize" textFill="WHITE">
+            <Button fx:id="adminRespProiect" layoutX="58.0" layoutY="591.0" mnemonicParsing="false" onAction="#goOnAdminRespProiect" style="-fx-background-color: #0F4CC1;" text="Administrare responsabili de proiect" textFill="WHITE">
                <effect>
                   <Bloom threshold="0.1">
                      <input>
@@ -204,7 +179,7 @@
                <font>
                   <Font size="16.0" />
                </font></Button>
-            <Button fx:id="adminOrg" layoutX="93.0" layoutY="673.0" mnemonicParsing="false" onAction="#goOnAdminOrg" style="-fx-background-color: #0F4CC1;" text="Administrare organizatii" textFill="WHITE">
+            <Button fx:id="adminDeviz" layoutX="59.0" layoutY="633.0" mnemonicParsing="false" onAction="#goOnAdminDeviz" style="-fx-background-color: #0F4CC1;" text="Administrare devize" textFill="WHITE">
                <effect>
                   <Bloom threshold="0.1">
                      <input>
@@ -226,7 +201,29 @@
                <font>
                   <Font size="16.0" />
                </font></Button>
-            <Button fx:id="goToStageBDelete" layoutX="452.0" layoutY="377.0" mnemonicParsing="false" onAction="#goToStageBDelete" style="-fx-background-color: #0F4CC1;" text="Stergeri Administrative" textFill="#fcfbf5">
+            <Button fx:id="adminOrg" layoutX="59.0" layoutY="676.0" mnemonicParsing="false" onAction="#goOnAdminOrg" style="-fx-background-color: #0F4CC1;" text="Administrare organizatii" textFill="WHITE">
+               <effect>
+                  <Bloom threshold="0.1">
+                     <input>
+                        <Blend mode="SRC_ATOP" opacity="0.57">
+                           <topInput>
+                              <Lighting diffuseConstant="0.95" specularConstant="0.0" specularExponent="0.0" surfaceScale="3.33">
+                                 <bumpInput>
+                                    <Shadow blurType="ONE_PASS_BOX" color="#e19f9f" height="102.62" radius="86.38" width="244.9" />
+                                 </bumpInput>
+                                 <light>
+                                    <Light.Distant color="#eb9090" />
+                                 </light>
+                              </Lighting>
+                           </topInput>
+                        </Blend>
+                     </input>
+                  </Bloom>
+               </effect>
+               <font>
+                  <Font size="16.0" />
+               </font></Button>
+            <Button fx:id="goToStageBDelete" layoutX="287.0" layoutY="380.0" mnemonicParsing="false" onAction="#goToStageBDelete" style="-fx-background-color: #0F4CC1; -fx-background-radius: 10;" text="Stergeri Administrative" textFill="#fcfbf5">
                <effect>
                   <Bloom threshold="0.1">
                      <input>
@@ -246,7 +243,7 @@
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="goToStage2Rapoarte" layoutX="930.0" layoutY="429.0" mnemonicParsing="false" onAction="#goToStage2Rapoarte" style="-fx-background-color: #0F4CC1;" text="Rapoarte pe facturi" textFill="#fcfbf5">
+            <Button fx:id="goToStage2Rapoarte" layoutX="893.0" layoutY="289.0" mnemonicParsing="false" onAction="#goToStage2Rapoarte" style="-fx-background-color: #0F4CC1; -fx-background-radius: 10;" text="Rapoarte detaliate" textFill="#fcfbf5">
                <effect>
                   <Bloom threshold="0.1">
                      <input>
@@ -266,7 +263,7 @@
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="buttonStage3Sumar" layoutX="930.0" layoutY="497.0" mnemonicParsing="false" onAction="#goToStage3Sumar" style="-fx-background-color: #0F4CC1;" text="Rapoarte sumarizate" textFill="#fcfbf5">
+            <Button fx:id="buttonStage3Sumar" layoutX="890.0" layoutY="354.0" mnemonicParsing="false" onAction="#goToStage3Sumar" style="-fx-background-color: #0F4CC1; -fx-background-radius: 10;" text="Rapoarte sumarizate" textFill="#fcfbf5">
                <effect>
                   <Bloom threshold="0.1">
                      <input>
@@ -286,6 +283,30 @@
                   <Font size="16.0" />
                </font>
             </Button>
+            <Button fx:id="goToStage4Pif" layoutX="1000.0" layoutY="224.0" mnemonicParsing="false" onAction="#goToStage4Pif" style="-fx-background-color: #0F4CC1; -fx-background-radius: 10;" text="Puneri in functiune" textFill="#fcfbf5">
+               <effect>
+                  <Bloom threshold="0.1">
+                     <input>
+                        <Blend mode="SRC_ATOP" opacity="0.57">
+                           <topInput>
+                              <Lighting diffuseConstant="0.95" specularConstant="0.0" specularExponent="0.0" surfaceScale="3.33">
+                                 <bumpInput>
+                                    <Shadow blurType="ONE_PASS_BOX" color="#e19f9f" height="102.62" radius="86.38" width="244.9" />
+                                 </bumpInput>
+                              </Lighting>
+                           </topInput>
+                        </Blend>
+                     </input>
+                  </Bloom>
+               </effect>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Line endX="100.0" layoutX="134.0" layoutY="205.0" startX="-100.0" strokeWidth="10.0" />
+            <Line endX="100.0" layoutX="351.0" layoutY="206.0" startX="-100.0" strokeWidth="10.0" />
+            <Line endX="100.0" layoutX="822.0" layoutY="591.0" startX="-100.0" strokeWidth="10.0" />
+            <Line endX="100.0" layoutX="1037.0" layoutY="591.0" startX="-100.0" strokeWidth="10.0" />
          </children>
       </AnchorPane>
    </children>

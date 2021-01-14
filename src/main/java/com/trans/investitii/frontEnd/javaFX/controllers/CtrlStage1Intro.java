@@ -13,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import org.apache.cassandra.io.DeletionService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,14 +21,13 @@ import java.nio.file.Paths;
 import java.sql.*;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
-import static java.lang.Double.doubleToLongBits;
 import static java.lang.Double.parseDouble;
 
 public class CtrlStage1Intro implements Initializable {
 
     @FXML
-    public Label CUI;
     public Label furnizor;
     public Label nrFactura;
     public Label Data;
@@ -42,7 +40,6 @@ public class CtrlStage1Intro implements Initializable {
 
     public ComboBox comBoboxFz;
     public TextField fieldNrFact;
-//    public TextField fieldCUI;
     public TextField fieldValFact;
     public DatePicker fieldDataFactura;
     public DatePicker fieldDataGL;
@@ -60,8 +57,10 @@ public class CtrlStage1Intro implements Initializable {
     public TableColumn respProjColumn;
     public TableColumn nrProjColumn;
     public TableColumn dataContabilizarii;
-    public TextField nrDeFacturiDeAfisat;
     public Button validFacturaButton;
+    public Button ButtonSt2Rapoarte;
+    public Button butonStage3Rapoarte;
+    public Button goToStage4Pif;
 
     @FXML
     TableView <Investitii> tableView;
@@ -88,7 +87,7 @@ public class CtrlStage1Intro implements Initializable {
         window.setScene( tabeleViewScene );
         window.show();
     }
-    public void goToStage2Rapoarte ( ActionEvent event ) throws SQLException, IOException {
+    public void goToStage2Rapoarte ( ActionEvent event ) throws IOException {
         Parent stage1Intro = FXMLLoader.load( getClass().getResource( "/fxml/Stage2Rapoarte.fxml" ) );
         Scene tableViewScene = new Scene( stage1Intro );
         Stage windowStage1Intro = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -103,7 +102,7 @@ public class CtrlStage1Intro implements Initializable {
     ResultSet rs1 =statement.executeQuery( "SELECT * FROM invTBL");// WHERE dataContablizarii > LOCALDATE " );
 
 
-    public void addFacturaButton ( ActionEvent event ) throws IOException, InterruptedException {
+    public void addFacturaButton ( ActionEvent event ) throws IOException {
 //        validareCampuri();
         addFactToSQL( connection );
         clearData();
@@ -111,7 +110,7 @@ public class CtrlStage1Intro implements Initializable {
 
     }
     public void addFactToSQL (Connection connection){
-        String addSql = "INSERT INTO invTBL  (furnizor, nrFactura, dataFacturii, dataContabilizarii, valoare, tva, valTot, contract, contInv, contFz, nrProiect, deviz, org, respProiect)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String addSql = "INSERT INTO invTBL  (furnizor, nrFactura, dataFacturii, dataContabilizarii, valoare, valInitiala tva, valTot, contract, contInv, contFz, nrProiect, deviz, org, respProiect)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try (PreparedStatement statement = connection.prepareStatement(addSql) ){
 
             Investitii newInvestitii = new Investitii(
@@ -140,7 +139,7 @@ public class CtrlStage1Intro implements Initializable {
                valTot = Math.round( valTot * 100 );
                valTot = valTot / 100;
 
-               statement.executeUpdate( "INSERT INTO invTBL (furnizor, nrFactura, dataFacturii, dataContabilizarii, valoare, tva, valTot, contract, contInv, contFz, nrProiect, deviz, org, respProiect) VALUES('"+comBoboxFz.getValue()+"','" +fieldNrFact.getText().toUpperCase()+ "','" +fieldDataFactura.getValue()+ " ',' " +fieldDataGL.getValue() + "','" +val+ " ',' " +tva+ " ' , '" +valTot+ " ',' " +
+               statement.executeUpdate( "INSERT INTO invTBL (furnizor, nrFactura, dataFacturii, dataContabilizarii, valoare, valInitiala, tva, valTot, contract, contInv, contFz, nrProiect, deviz, org, respProiect) VALUES('"+comBoboxFz.getValue()+"','" +fieldNrFact.getText().toUpperCase()+ "','" +fieldDataFactura.getValue()+ " ',' " +fieldDataGL.getValue() + "','" +val+ " ','" +val+ " ',' " +tva+ " ' , '" +valTot+ " ',' " +
                        comboBoxContract.getValue()+ "','" +comboBoxCtInv.getValue()+ "','" +cBCtFz.getValue()+ "','" +cBProjNr.getValue()+ "','" +comboBoxDeviz.getValue() +"','"+comboBoxOrg.getValue()+"','"+comboBoxRespProj.getValue()+"')" );
 
                Alert confirm = new Alert( Alert.AlertType.INFORMATION );
@@ -160,7 +159,6 @@ public class CtrlStage1Intro implements Initializable {
         addFacturaButtonId.setDisable( true );
 
         List<String> myListFz = null;
-        // List<String> myListCUI = null;
         List<String> myListContract = null;
         List<String> myListCtInvest = null;
         List<String> myListCtFz = null;
@@ -178,19 +176,49 @@ public class CtrlStage1Intro implements Initializable {
             myListOrg = Files.readAllLines( ( Paths.get("C:/Investitii/resurse/org") ));
             myListRespProj = Files.readAllLines( ( Paths.get("C:/Investitii/resurse/respproj") ));
             myListProj = Files.readAllLines( (Paths.get( "C:/Investitii/resurse/newproj" ) ));
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-        comBoboxFz.setItems( FXCollections.observableArrayList(myListFz));
-        comboBoxContract.setItems( FXCollections.observableArrayList(myListContract));
-        comboBoxCtInv.setItems( FXCollections.observableArrayList(myListCtInvest));
-        cBCtFz.setItems( FXCollections.observableArrayList(myListCtFz));
-        comboBoxDeviz.setItems( FXCollections.observableArrayList(myListDeviz));
-        comboBoxOrg.setItems( FXCollections.observableArrayList(myListOrg));
-        comboBoxRespProj.setItems( FXCollections.observableArrayList(myListRespProj));
-        cBProjNr.setItems( FXCollections.observableArrayList(myListProj));
+
+        List<String> furnizoriActivi = myListFz.stream()
+                .filter( furnizor -> !furnizor.contains( "INACTIV-" ) )
+                .collect( Collectors.toList() );
+        comBoboxFz.setItems( FXCollections.observableArrayList(furnizoriActivi));
+
+        List<String> contracteActive = myListContract.stream()
+                .filter( contract -> !contract.contains( "INACTIV-" ) )
+                .collect( Collectors.toList() );
+        comboBoxContract.setItems( FXCollections.observableArrayList(contracteActive));
+
+        List<String> ctInvestActive = myListCtInvest.stream()
+                .filter( ctInvest -> !ctInvest.contains( "INACTIV-" ) )
+                .collect( Collectors.toList() );
+        comboBoxCtInv.setItems( FXCollections.observableArrayList(ctInvestActive));
+
+        List<String> ctFzActivi = myListCtFz.stream()
+                .filter( ctFz -> !ctFz.contains( "INACTIV-" ) )
+                .collect( Collectors.toList() );
+        cBCtFz.setItems( FXCollections.observableArrayList(ctFzActivi));
+
+        List<String> devizeActive = myListDeviz.stream()
+                .filter( devize -> !devize.contains( "INACTIV-" ) )
+                .collect( Collectors.toList() );
+        comboBoxDeviz.setItems( FXCollections.observableArrayList(devizeActive));
+
+        List<String> orgActive = myListOrg.stream()
+                .filter( org -> !org.contains( "INACTIV-" ) )
+                .collect( Collectors.toList() );
+        comboBoxOrg.setItems( FXCollections.observableArrayList(orgActive));
+
+        List<String> responsabiliActivi = myListRespProj.stream()
+                .filter( org -> !org.contains( "INACTIV-" ) )
+                .collect( Collectors.toList() );
+        comboBoxRespProj.setItems( FXCollections.observableArrayList(responsabiliActivi));
+
+        List<String> proiecteActive = myListProj.stream()
+                .filter( proiect -> !proiect.contains( "INACTIV-" ) )
+                .collect( Collectors.toList() );
+        cBProjNr.setItems( FXCollections.observableArrayList(proiecteActive));
 //pt tabel in scena
         furnizorColumn.setCellValueFactory( new PropertyValueFactory<>( "furnizor" ) );
         facturaColumn.setCellValueFactory( new PropertyValueFactory<>( "nrFactura" ) );
@@ -220,10 +248,11 @@ public class CtrlStage1Intro implements Initializable {
         }
     }
 
-    private void clearData() throws IOException {
+    private void clearData() {
         comBoboxFz.getSelectionModel().select( null);
-        fieldNrFact.setText( null );
-        fieldValFact.setText( null );
+//        fieldNrFact.setText( null );
+        fieldNrFact.clear();
+        fieldValFact.clear();
         fieldDataFactura.getEditor().clear();
         fieldDataGL.getEditor().clear();
         comboBoxRespProj.getSelectionModel().select( null);
@@ -240,17 +269,20 @@ public class CtrlStage1Intro implements Initializable {
             Alert alert = new Alert( Alert.AlertType.INFORMATION );
             alert.setHeaderText( "Alege Furnizorul" );
             alert.showAndWait();
+            return;
         }
 
-        if (fieldNrFact.getText().isEmpty()) {
+        if (fieldNrFact.getText().isEmpty() || fieldNrFact.getText()==null) {
             Alert alert = new Alert( Alert.AlertType.INFORMATION );
             alert.setHeaderText( "Adauga numarul de factura!" );
             alert.showAndWait();
+            return;
         }
         if (fieldValFact.getText().isEmpty()) {
             Alert alert = new Alert( Alert.AlertType.INFORMATION );
             alert.setHeaderText( "Adauga VALOAREA facturii fara TVA!" );
             alert.showAndWait();
+            return;
         }
 
         try {
@@ -265,47 +297,56 @@ public class CtrlStage1Intro implements Initializable {
             Alert alert1 = new Alert( Alert.AlertType.INFORMATION );
             alert1.setHeaderText( "Adauga VALOAREA ca numar! Atentie la virgula!" );
             alert1.showAndWait();
+            return;
         }
 
         if (fieldDataFactura.getValue() == null || fieldDataGL.getValue() == null) {
             Alert alert = new Alert( Alert.AlertType.INFORMATION );
             alert.setHeaderText( "Adauga data!" );
             alert.showAndWait();
+            return;
         }
         if (comboBoxContract.getValue() == null) {
             Alert alert = new Alert( Alert.AlertType.INFORMATION );
             alert.setHeaderText( "Alege numarul de contract" );
             alert.showAndWait();
+            return;
         }
         if (comboBoxCtInv.getValue() == null) {
             Alert alert = new Alert( Alert.AlertType.INFORMATION );
             alert.setHeaderText( "Alege contul de investitii" );
             alert.showAndWait();
+            return;
         }
         if (cBCtFz.getValue() == null) {
             Alert alert = new Alert( Alert.AlertType.INFORMATION );
             alert.setHeaderText( "Alege contul de furnizori" );
             alert.showAndWait();
+            return;
         }
         if (cBProjNr.getValue() == null) {
             Alert alert = new Alert( Alert.AlertType.INFORMATION );
             alert.setHeaderText( "Alege numarul de proiect" );
             alert.showAndWait();
+            return;
         }
         if (comboBoxRespProj.getValue() == null) {
             Alert alert = new Alert( Alert.AlertType.INFORMATION );
             alert.setHeaderText( "Alege responsabilul de proiect" );
             alert.showAndWait();
+            return;
         }
         if (comboBoxDeviz.getValue() == null) {
             Alert alert = new Alert( Alert.AlertType.INFORMATION );
             alert.setHeaderText( "Alege numarul de deviz" );
             alert.showAndWait();
+            return;
         }
         if (comboBoxOrg.getValue() == null) {
             Alert alert = new Alert( Alert.AlertType.INFORMATION );
             alert.setHeaderText( "Alege organizatia" );
             alert.showAndWait();
+            return;
         }
 
         if (   comBoboxFz.getValue() != null && !fieldNrFact.getText().isEmpty() && !fieldValFact.getText().isEmpty()
@@ -321,4 +362,20 @@ public class CtrlStage1Intro implements Initializable {
         }
     }
 
+    public void goOnStage3Rapoarte ( ActionEvent event ) throws IOException {
+        Parent stage3Intro = FXMLLoader.load( getClass().getResource( "/fxml/Stage3RapoarteInv.fxml" ) );
+        Scene tableViewScene = new Scene( stage3Intro );
+        Stage windowStage1Intro = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        windowStage1Intro.setScene( tableViewScene );
+        windowStage1Intro.show();
+    }
+
+    public void goToStage4Pif ( ActionEvent event ) throws IOException {
+        Parent stage1Intro = FXMLLoader.load( getClass().getResource( "/fxml/Stage4Pif.fxml" ) );
+        Scene tableViewScene = new Scene( stage1Intro );
+        Stage windowStage1Intro = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        windowStage1Intro.setScene( tableViewScene );
+        windowStage1Intro.show();
+
+    }
 }
