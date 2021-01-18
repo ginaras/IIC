@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.*?>
+
 <AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.trans.investitii.frontEnd.javaFX.controllers.CtrlStage4PIF">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="20.0" fill="#065bab" height="110.0" layoutX="5.0" layoutY="3.0" stroke="BLACK" strokeDashOffset="5.0" strokeLineJoin="BEVEL" strokeWidth="10.0" width="1190.0" />
@@ -68,7 +72,7 @@
             <Font size="16.0" />
          </font>
       </Button>
-      <Button fx:id="buttonReturFactura" layoutX="584.0" layoutY="424.0" mnemonicParsing="false" onAction="#returFactura" style="-fx-background-color: #0F4CC1; -fx-background-radius: 10;" text="&lt;-Renunta la factura" textFill="#fcfbf5">
+      <Button fx:id="buttonReturFactura" layoutX="584.0" layoutY="350.0" mnemonicParsing="false" onAction="#returFactura" style="-fx-background-color: #0F4CC1; -fx-background-radius: 10;" text="&lt;-Renunta la factura" textFill="#fcfbf5">
          <effect>
             <Bloom threshold="0.1">
                <input>
@@ -168,8 +172,6 @@
             <Font size="16.0" />
          </font>
       </Button>
-      <TextField fx:id="textFieldValoarePIF" alignment="TOP_CENTER" layoutX="588.0" layoutY="295.0" prefHeight="31.0" prefWidth="158.0" promptText="Valoare Pif" />
-      <Label layoutX="587.0" layoutY="266.0" text="Valoare pusa in functiune" />
       <Button fx:id="buttonPIF" layoutX="879.0" layoutY="729.0" mnemonicParsing="false" onAction="#finalizarePIF" style="-fx-background-color: #0F4CC1; -fx-background-radius: 10;" text="Finalizare punere in functiune" textFill="#fcfbf5">
          <effect>
             <Bloom threshold="0.1">
@@ -218,27 +220,6 @@
       <Label fx:id="labelNrCrt5" layoutX="601.0" layoutY="608.0" />
       <Label fx:id="labelNrCrtReturn" layoutX="715.0" layoutY="517.0" />
       <Button fx:id="buttonReset" layoutX="709.0" layoutY="152.0" mnemonicParsing="false" onAction="#reset" style="-fx-background-color: #0F4CC1; -fx-background-radius: 10;" text="Reseteaza cautarea" textFill="#fcfbf5">
-         <effect>
-            <Bloom threshold="0.1">
-               <input>
-                  <Blend mode="SRC_ATOP" opacity="0.57">
-                     <topInput>
-                        <Lighting diffuseConstant="0.95" specularConstant="0.0" specularExponent="0.0" surfaceScale="3.33">
-                           <bumpInput>
-                              <Shadow blurType="ONE_PASS_BOX" color="#e19f9f" height="102.62" radius="86.38" width="244.9" />
-                           </bumpInput>
-                        </Lighting>
-                     </topInput>
-                  </Blend>
-               </input>
-            </Bloom>
-         </effect>
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Button>
-      <Label layoutX="626.0" layoutY="237.0" text="Modifica" />
-      <Button fx:id="buttonModificareValoare" layoutX="592.0" layoutY="338.0" mnemonicParsing="false" onAction="#aplicaModificareaDeValoare" prefHeight="70.0" prefWidth="153.0" style="-fx-background-color: #0F4CC1; -fx-background-radius: 10;" text="Aplica modificarea de valoare" textAlignment="CENTER" textFill="#fcfbf5" wrapText="true">
          <effect>
             <Bloom threshold="0.1">
                <input>

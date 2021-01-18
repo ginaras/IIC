@@ -66,7 +66,6 @@ public class CtrlStage4PIF implements Initializable {
     public ObservableList<Investitii> tabelFacturiDePIF;
     public ObservableList<Investitii> tabelFinalDePif2;
     public Button buttonReset;
-    public Button buttonModificareValoare;
     public DatePicker dataPIF;
 
     Connection connection = DriverManager.getConnection( Investitii.URL, Investitii.USER, Investitii.PASSWORD );
@@ -275,10 +274,6 @@ public class CtrlStage4PIF implements Initializable {
         for (Investitii factura : selectedRows) {
             allInvoice.remove( factura );
         }
-//todo de scos
-//        textFieldValoarePIF.setText(selectValoare.getValoare());
-//        String x = textFieldValoarePIF.getText().toString();
-//        System.out.println(x);
     }
 
 
@@ -357,19 +352,6 @@ public class CtrlStage4PIF implements Initializable {
        }
     }
 
-    public void aplicaModificareaDeValoare ( ActionEvent event ) {
-//        String val = textFieldValoarePIF.getText().toString();
-//        String nrCrt = labelNrCrt.getText();
-//        System.out.println(val + " + "+ nrCrt);
-//
-//        buttonModificareValoare.setOnAction(action ->{
-//            String text = textFieldValoarePIF.getText();
-//            tabelFinalPif.getItems().stream()
-//                    .filter(row -> row.getValoare().equals(text))
-//                    .findFirst()
-//                    .ifPresent(row -> row.setValoare("Running"));
-//        });
-    }
 
     public void validarePIF ( ActionEvent event ) throws SQLException {
         String totalSelectForPIF = "SELECT ROUND(SUM(valoare),2) as 'totalPif' FROM invTBL WHERE org='"+comboBoxButtonOrg.getValue()+"' AND nrProiect='"+comboBoxButtonProj.getValue()+"' AND nrCrt='"+labelNrCrt.getText()+"' or nrcrt='"+labelNrCrt1.getText()+"'or nrcrt='"+labelNrCrt2.getText()+"'or nrcrt='"+labelNrCrt3.getText()+"'or nrcrt='"+labelNrCrt.getText()+"'or nrcrt='"+labelNrCrt5.getText()+"'";

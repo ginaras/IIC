@@ -153,7 +153,7 @@ public class CtrlStage2Rapoarte implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        tableViewTotal.setPlaceholder(new Label("Nici o factura in combinatia selectata! Reseteaza selectia si ia-o de la capat "));
     }
 
     public void selectButtton () throws SQLException {
